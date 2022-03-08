@@ -1,10 +1,11 @@
-//TODO
-// add sorting function by clicking table headers, sort by grade, attributes, etc
-// add popup when you click on the row 
-// add check image to each binary attribute 
-// add function to detirmine final Rating
-// add search bar at top for location and climb name 
-
+<!-- TODO
+add sorting function by clicking table headers, sort by grade, attributes, etc
+add popup when you click on the row 
+add check image to each binary attribute 
+add function to detirmine final Rating
+add search bar at top for location and climb name 
+make table headers sticky
+-->
 <?php
 include 'top.php';
 ?>
@@ -41,12 +42,18 @@ include 'top.php';
             print '<td>' . $climb['fldGrade'] . '</td>';
             print '<td>' . $climb['fldName'] . '</td>';
             print '<td>' . $climb['fldLocation'] . '</td>';
-            print '<td>' . $climb['fldUncontrived'] . '</td>';
-            print '<td>' . $climb['fldObviousStart'] . '</td>';
-            print '<td>' . $climb['fldGoodRock'] . '</td>';
-            print '<td>' . $climb['fldFlatLanding'] . '</td>';
-            print '<td>' . $climb['fldTall'] . '</td>';
-            print '<td>' . $climb['fldGoodSetting'] . '</td>';
+            if($climb['fldUncontronved'] = 1){print '<td><i class="fa fa-check"></i></td>';}
+            else{print '<td><i class="fa fa-remove"></i></td>';}
+            if($climb['fldObviousStart'] = 1){print '<td><i class="fa fa-check"></i></td>';}
+            else{print '<td><i class="fa fa-remove"></i></td>';}
+            if($climb['fldGoodRock'] = 1){print '<td><i class="fa fa-check"></i></td>';}
+            else{print '<td><i class="fa fa-remove"></i></td>';}
+            if($climb['fldFlatLanding'] = 1){print '<td><i class="fa fa-check"></i></td>';}
+            else{print '<td><i class="fa fa-remove"></i></td>';}
+            if($climb['fldTall'] = 1){print '<td><i class="fa fa-check"></i></td>';}
+            else{print '<td><i class="fa fa-remove"></i></td>';}
+            if($climb['fldGoodSetting'] = 1){print '<td><i class="fa fa-check"></i></td>';}
+            else{print '<td><i class="fa fa-remove"></i></td>';}
             print '<td>' . $climb['fldFinalRating'] . '</td>';
             print '</tr>' . PHP_EOL;
         }

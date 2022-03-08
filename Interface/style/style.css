@@ -175,6 +175,14 @@ td{
   padding-left: 1em;
 }
 
+.fa-check {
+  color: green;
+}
+
+.fa-remove {
+  color: red;
+}
+
 button.session{
   background-color: lightblue;
   padding: 10px 24px;
