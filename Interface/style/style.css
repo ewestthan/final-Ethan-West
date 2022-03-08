@@ -54,7 +54,6 @@ body{
   overflow: hidden;
   border: 1px solid #ccc;
   flex-grow: 1;
-  
 }
 
 /* Style the buttons that are used to open the tab content */
@@ -144,95 +143,33 @@ p{
   line-height: 1.8;
 }
 
-.imgAbout{
-  border-radius: 100%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 150px;
-  height: 150px;
-  object-fit: contain;
-  margin-top: 1em;
-}
-
-.about{
-  margin-top: 3em;
-  border-radius: 1em;
-  padding: 1em;
-  padding-left: 0%;
-}
-
 tr:nth-child(even) {background-color: #f2f2f2;}
 
-th{
-  width: 100%;
-  background-color: #CCCCCCCC;
+table{
+  display: flex;
+  align-items:center;
+  justify-content: center;
 }
+
+th{
+  padding: 1em;
+}
+
 td{
-  padding-top: .5em;
-  padding-bottom: .5em;
-  padding-right: 1em;
-  padding-left: 1em;
+  padding: 0.5em;
 }
 
 .fa-check {
   color: green;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
 
 .fa-remove {
   color: red;
-}
-
-button.session{
-  background-color: lightblue;
-  padding: 10px 24px;
-  font-size: 16px;
-  border: none;
   display: block;
   margin-left: auto;
   margin-right: auto;
-
-}
-button.session:hover{
-  background-color: lightgreen;
-}
-
-.chartBox{
-  align-self: center;
-  flex-shrink: 0;
-  height: fit-content;
-  max-height: -webkit-fill-available;
-}
-
-canvas {
-  width: 600px;
-  background-color: lightgrey;
-  border-radius: 1em;
-}
-
-p.userinfo{
-  text-align:left;
-  padding-left: 60px;
-  margin: auto;
-  line-height: 1.8;
-}
-h3.userinfo{
-  text-align:left;
-  padding-left: 60px;
-  margin: auto;
-  padding-bottom: 1em;
-}
-
-h2{
-  text-align: center;
-  padding-top: 1em;
-}
-section.userinfo{
-  background-color: lightgreen;
-  margin: 5em;
-  padding-top: 45px;
-  padding-bottom: 45px;
-  border-radius: 1em;
-  margin-top: 3em;
-  margin-bottom: 3em;
+  width: 50%;
 }
