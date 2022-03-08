@@ -1,0 +1,55 @@
+#text{
+    height: 25px;
+    padding: 4px;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid darkgreen;
+    background: none;
+    color: lightgrey;
+}
+
+#text:focus{
+    outline: none;
+    border-bottom: 4px solid darkgreen;
+}
+#button{
+    padding: 10px;
+    width: 100px;
+    color: lightgrey;
+    background-color: darkgreen;
+    border: none;
+}
+
+#box{
+    background-color: green;
+    margin: auto;
+    width: 300px;
+    padding: 20px;
+    top: 50%;
+    border-radius: 15px;
+    text-align: center;
+    color: lightgrey;
+    padding: 1em;
+    color: lightgrey;
+}
+
+html{
+    background-color: lightgreen;
+}
+
+.navLogo{
+    border-radius: 20%;
+    width: 130px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1em;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active  {
+  transition: background-color 5000s;
+  -webkit-text-fill-color: lightgrey !important;
+}
