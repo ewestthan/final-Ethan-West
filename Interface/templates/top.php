@@ -11,6 +11,7 @@
         <link rel="stylesheet" 
               href="../style/style.css?version=<?php print time();?>"
               type="text/css">
+        <script src="../static/popup.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <?php

@@ -1,7 +1,6 @@
 <!-- TODO
 add sorting function by clicking table headers, sort by grade, attributes, etc
 add popup when you click on the row 
-add check image to each binary attribute 
 add function to detirmine final Rating
 add search bar at top for location and climb name 
 make table headers sticky
@@ -37,12 +36,12 @@ include 'top.php';
         $climbs = $databaseWriter->select($sql);
 
         foreach ($climbs as $climb) {
-            print '<tr>'; //include mouse click display image/description and links to vids
+            print '<tr class="popup" onclick="showPopup()">'; //include mouse click display image/description and links to vids
             print '<td>' . $climb['fldPlace'] . '</td>';
             print '<td>' . $climb['fldGrade'] . '</td>';
             print '<td>' . $climb['fldName'] . '</td>';
             print '<td>' . $climb['fldLocation'] . '</td>';
-            if($climb['fldUncontronved'] = 1){print '<td><i class="fa fa-check"></i></td>';}
+            if($climb['fldUncontrived'] = 1){print '<td><i class="fa fa-check"></i></td>';}
             else{print '<td><i class="fa fa-remove"></i></td>';}
             if($climb['fldObviousStart'] = 1){print '<td><i class="fa fa-check"></i></td>';}
             else{print '<td><i class="fa fa-remove"></i></td>';}
@@ -55,15 +54,14 @@ include 'top.php';
             if($climb['fldGoodSetting'] = 1){print '<td><i class="fa fa-check"></i></td>';}
             else{print '<td><i class="fa fa-remove"></i></td>';}
             print '<td>' . $climb['fldFinalRating'] . '</td>';
+            print '<section class="popuptext" id="popup">Popup text...</section>';
             print '</tr>' . PHP_EOL;
         }
         print '</table>';
-
-		print "<script>" . PHP_EOL;
-		include "../static/tableSort.js";
-		print PHP_EOL . "</script>";
+        // print "<section class='popuptext' id='popup'>" . $climb["fldImage"]  . $climb["fldDescription"] .  "Popup Works</section>";
 		?>
 </section>
-<script>
-	document.getElementById("default").click();
-</script>
+
+<div class="popup" onclick="showPopup()">Click me!
+  <section class="popuptext" id="popup">Popup text...</section>
+</div>
