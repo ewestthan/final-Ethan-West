@@ -70,6 +70,7 @@ function sortByDate() {
       }
     }
   }
+
   function sortByRank() {
     var table, rows, switching, i, x, y, shouldSwitch;
     table = document.getElementById("mainTable");
@@ -90,11 +91,11 @@ function sortByDate() {
         x = rows[i].getElementsByTagName("td")[0];
         y = rows[i + 1].getElementsByTagName("td")[0];
         // Check if the two rows should switch place:
-        x = x.innerText.substring(1);
-        y = y.innerText.substring(1);
+        x = x.innerText;
+        y = y.innerText;
         x = parseInt(x);
         y = parseInt(y);
-        if (x > y) {
+        if (x < y) {
             shouldSwitch = true;
             break;
           }

@@ -32,7 +32,7 @@ function printModal($id, $databaseWriter){
     <h1>Eric's Top 100 double digits</h1>
     <table id="mainTable">
         <tr>
-            <th id='grade' onclick='sortByRank()'>Rank</th>  
+            <th id='rank' onclick='sortByRank()'>Rank</th>  
             <th id='grade' onclick='sortByHardest()'>Grade</th>
             <th>Name</th>
             <th>Location</th>
@@ -78,43 +78,3 @@ function printModal($id, $databaseWriter){
         print '</table>';
 		?>
 </section>
-
-<!-- <script>
-    function sortByHardest() {
-  var table, rows, switching, i, x, y, shouldSwitch;
-  table = document.getElementById("mainTable");
-  switching = true;
-  /* Make a loop that will continue until
-  no switching has been done: */
-  while (switching) {
-    // Start by saying: no switching is done:
-    switching = false;
-    rows = table.rows;
-    /* Loop through all table rows (except the
-    first, which contains table headers): */
-    for (i = 1; i < (rows.length - 1); i++) {
-      // Start by saying there should be no switching:
-      shouldSwitch = false;
-      /* Get the two elements you want to compare,
-      one from current row and one from the next: */
-      x = rows[i].getElementsByTagName("td")[1];
-      y = rows[i + 1].getElementsByTagName("td")[1];
-      // Check if the two rows should switch place:
-      x = x.innerText.substring(1);
-      y = y.innerText.substring(1);
-      x = parseInt(x);
-      y = parseInt(y);
-      if (x < y) {
-          shouldSwitch = true;
-          break;
-        }
-    }
-    if (shouldSwitch) {
-      /* If a switch has been marked, make the switch
-      and mark that a switch has been done: */
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-    }
-  }
-}
-</script> -->
