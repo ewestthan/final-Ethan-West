@@ -27,15 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 ?>
 
-<a href='login.php'><img src="../images/logo.png" class='navLogo' alt='logo'></a>
-<div id="box">
+
 
 	<form method="post">
-		<div style="font-size: 20px;margin: 10px;color: lightgrey; text-align:center">Login</div>
-		<label for="username" id="label">Username</label>
-		<input id="text" type="text" name="username"><br><br>
-		<label for="password" id="label">Password</label>
-		<input id="text" type="password" name="password"><br><br>
 
 		<input id="button" type="submit" value="Login"><br><br>
 

@@ -5,17 +5,17 @@
         </li>
         <li>
             <a class ="<?php
-            if(PATH_PARTS['filename'] == "profile") {
+            if(PATH_PARTS['filename'] == "index") {
                 print 'activePage';
             }
-            ?>" href = "profile.php">Home</a>
+            ?>" href = "index.php">Home</a>
         </li>
         <li>
             <a class ="<?php
-            if(PATH_PARTS['filename'] == "about") {
+            if(PATH_PARTS['filename'] == "indexDnD") {
                 print 'activePage';
             }
-            ?>" href = "about.php">About</a>
+            ?>" href = "indexDnD.php">Drag and Drop</a>
         </li>
         <li style='float:right'>
             <?php
