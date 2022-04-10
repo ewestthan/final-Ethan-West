@@ -15,7 +15,7 @@
             if(PATH_PARTS['filename'] == "indexDnD") {
                 print 'activePage';
             }
-            ?>" href = "indexDnD.php">Drag and Drop</a>
+            ?>" href = "updateMain.php">Edit</a>
         </li>
         <li style='float:right'>
             <?php

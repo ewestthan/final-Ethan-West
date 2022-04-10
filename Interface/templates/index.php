@@ -13,7 +13,7 @@ display row on bottom
 
 Editing:
 add the form to add climbs
-add add functionality to edit checkmarks
+add functionality to edit checkmarks
 save updated data to database
 
 later on

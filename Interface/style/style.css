@@ -67,6 +67,10 @@ h3{
 table{
   align-items:center;
   justify-content: center;
+  border-collapse: collapse;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10+ and Edge */
+  user-select: none; /* Standard syntax */
 }
 
 th{
@@ -88,6 +92,13 @@ tr:nth-child(even) {
 td{
   padding: 0.5em;
 }
+
+td,tr,th{
+  border:1px solid white;
+  border-collapse: collapse;
+  cursor:all-scroll;
+ }
+ 
 
 .fa-check {
   color: green;

@@ -1,16 +1,116 @@
 <!-- TODO
-add sorting function by clicking table headers, sort by grade, attributes, etc
-fix "id" span element on modal to exit modal
 finish setting up modal
 add function to detirmine final Rating
-add search bar at top for location and climb name 
 make table headers sticky
 
 -->
 
 <?php
 include 'top.php';
-include 'updateForm.php';
+if(isset($_POST['btnDelete'])){
+    if(DEBUG){
+        print '<p>POST array:</p><pre>';
+        print_r($_POST);
+        print'</pre>';
+    }
+    $rank = filter_var($_POST['hidRank']);
+    
+    $sql = 'DELETE FROM top100 WHERE fldRank = '. $rank;
+    $data = '';
+    if(DEBUG){
+        print $thisDatabaseReader->displayQuery($sql, $data);
+    }
+    $thisDatabaseWriter->select($sql, $data);
+}
+
+if(isset($_POST['btnUpdate'])){
+    if(DEBUG){
+        print '<p>POST array:</p><pre>';
+        print_r($_POST);
+        print'</pre>';
+    }
+    $saveData = true;
+
+    $rank = filter_var($_POST['hidRank']);
+    $grade = filter_var($_POST['txtGrade']);
+    $name = filter_var($_POST['txtName']);
+    $location = filter_var($_POST['txtLocation']);
+    $uncontrived = getData('chkUncontrived');
+    $obvious = getData('chkObvious');
+    $goodRock = getData('chkGoodRock');
+    $flatLanding = getData('chkFlatLanding');
+    $tall = getData('chkTall');
+    $goodSetting = getData('chkGoodSetting');
+
+    if(!filter_var($grade)){
+        print '<p class="mistake">Please enter a valid grade.</p>';
+        $saveData = false;
+    }
+    if(!filter_var($name)){
+        print '<p class="mistake">Please enter a valid name.</p>';
+        $saveData = false;
+    }
+    if(!filter_var($location)){
+        print '<p class="mistake">Please enter a valid location.</p>';
+        $saveData = false;
+    }
+    
+    
+    if($saveData){
+        $sql = 'INSERT INTO tblTop100 SET ';
+        $sql .= 'fldRank = ?, ';
+        $sql .= 'fldGrade = ?, ';
+        $sql .= 'fldName = ?, ';
+        $sql .= 'fldLocation = ?, ';
+        $sql .= 'fldUncontrived = ?, ';
+        $sql .= 'fldObviousStart = ?, ';
+        $sql .= 'fldGoodRock = ?, ';
+        $sql .= 'fldFlatLanding = ?, ';
+        $sql .= 'fldTall = ?, ';
+        $sql .= 'fldGoodSetting = ?';
+
+        $sql .= ' ON DUPLICATE KEY UPDATE ';
+        $sql .= 'fldGrade = ?, ';
+        $sql .= 'fldName = ?, ';
+        $sql .= 'fldLocation = ?, ';
+        $sql .= 'fldUncontrived = ?, ';
+        $sql .= 'fldObviousStart = ?, ';
+        $sql .= 'fldGoodRock = ?, ';
+        $sql .= 'fldFlatLanding = ?, ';
+        $sql .= 'fldTall = ?, ';
+        $sql .= 'fldGoodSetting = ?';
+
+        $data = array();
+        $data[] = $rank;
+        $data[] = $grade;
+        $data[] = $name;
+        $data[] = $location;
+        $data[] = $uncontrived;
+        $data[] = $obvious;
+        $data[] = $goodRock;
+        $data[] = $flatLanding;
+        $data[] = $tall;
+        $data[] = $goodSetting;
+
+        $data[] = $grade;
+        $data[] = $name;
+        $data[] = $location;
+        $data[] = $uncontrived;
+        $data[] = $obvious;
+        $data[] = $goodRock;
+        $data[] = $flatLanding;
+        $data[] = $tall;
+        $data[] = $goodSetting;
+
+        if(DEBUG){
+            print $thisDatabaseWriter->displayQuery($sql, $data);
+        }
+
+        if($thisDatabaseWriter->insert($sql, $data)){
+            print 'Updated!';
+        }
+    }
+}
 
 function printModal($id, $thisDatabaseWriter){
     $sql = 'SELECT * FROM top100 WHERE fldRank = "' . $id . '"';
@@ -35,8 +135,8 @@ function printModal($id, $thisDatabaseWriter){
     
     <table id="dndTable">
         <tr>
-            <th id='rank' onclick='sortByRank()'>Rank</th>  
-            <th id='grade' onclick='sortByHardest()'>Grade</th>
+            <th>Rank</th>  
+            <th>Grade</th>
             <th>Name</th>
             <th>Location</th>
             <th>Uncontrived</th>
@@ -48,13 +148,10 @@ function printModal($id, $thisDatabaseWriter){
             <th>Final Rating</th>
         </tr>
 		<?php
-
         $sql = 'SELECT * FROM top100 ORDER BY fldRank ASC';
-        
         if (DEBUG) {
             print $thisDatabaseWriter->displayQuery($sql);
         }
-
         $climbs = $thisDatabaseWriter->select($sql);
 
         foreach ($climbs as $climb) {
@@ -69,190 +166,53 @@ function printModal($id, $thisDatabaseWriter){
             $tall = $climb['fldTall'];
             $goodSetting = $climb['fldGoodSetting'];
 
-            $saveData = true;
-        print '<tr>';
-        print '<form action="' . PHP_SELF . '" id="frmUpdate" method="post">';
+            print '<tr draggable="true" ondragstart="start()" ondragover="dragover()">';
+            print '<form action="' . PHP_SELF . '" id="frmUpdate" method="post">';
             print '<td>' . $rank . '</td>';
-            print '<td class="textbox">';
-                print '<input type="text" id="txtGrade" name="txtGrade" value="' . $grade . '" tabindex="300">';
-            print '</td>';
-            print '<td class="textbox">';
-                print '<input type="text" id="txtName" name="txtName" value="' . $name . '" tabindex="300">';
-            print '</td>';
-            print '<td class="textbox">';
-                print '<input type="text" id="txtLocation" name="txtLocation" value="' . $location . '" tabindex="300">';
-            print '</td>';
-            print '<td class="checkbox">';
-                print '<input type="checkbox" id="chkUncontrived" value ="1" name="chkUncontrived" '; 
-                if($uncontrived == 1) print 'checked'; 
-                print ' tabindex="500">';
-            print '</td>';
-            print '<td class="checkbox">';
-            print '<input type="checkbox" id="chkObvious" value ="1" name="chkObvious" ';
+            print '<td class="textbox"><input type="text" id="txtGrade" name="txtGrade" value="' . $grade . '" tabindex="300"></td>';
+            print '<td class="textbox"><input type="text" id="txtName" name="txtName" value="' . $name . '" tabindex="300"></td>';
+            print '<td class="textbox"><input type="text" id="txtLocation" name="txtLocation" value="' . $location . '" tabindex="300"></td>';
+            print '<td class="checkbox"><input type="checkbox" id="chkUncontrived" value ="1" name="chkUncontrived" '; 
+            if($uncontrived == 1) print 'checked'; 
+            print ' tabindex="500"></td>';
+            print '<td class="checkbox"><input type="checkbox" id="chkObvious" value ="1" name="chkObvious" ';
             if($obvious == 1) print 'checked'; 
-            print ' tabindex="500">';
-            print '</td>';
-            print '<td class="checkbox">';
-                print '<input type="checkbox" id="chkGoodRock" value ="1" name="chkGoodRock" ';
+            print ' tabindex="500"></td>';
+            print '<td class="checkbox"><input type="checkbox" id="chkGoodRock" value ="1" name="chkGoodRock" ';
                 if($goodRock == 1) print 'checked'; 
-                print ' tabindex="500">';
-            print '</td>';
-            print '<td class="checkbox">';
-                print '<input type="checkbox" id="chkFlatLanding" value ="1" name="chkFlatLanding" ';
+                print ' tabindex="500"></td>';
+            print '<td class="checkbox"><input type="checkbox" id="chkFlatLanding" value ="1" name="chkFlatLanding" ';
                 if($flatLanding == 1) print 'checked'; 
-                print ' tabindex="500">';
-            print '</td>';
-            print '<td class="checkbox">';
-                print '<input type="checkbox" id="chkTall" value ="1" name="chkTall" ';
+                print ' tabindex="500"></td>';
+            print '<td class="checkbox"><input type="checkbox" id="chkTall" value ="1" name="chkTall" ';
                 if($tall == 1) print 'checked'; 
-                print ' tabindex="500">';
-            print '</td>';
-            print '<td class="checkbox">';
-                print '<input type="checkbox" id="chkGoodSetting" value ="1" name="chkGoodSetting" ';
+                print ' tabindex="500"></td>';
+            print '<td class="checkbox"><input type="checkbox" id="chkGoodSetting" value ="1" name="chkGoodSetting" ';
                 if($goodSetting == 1) print 'checked';
-                print ' tabindex="500">';
-            print '</td>';
-            print '<td>
-                <p><input type="submit" value="Submit" tabindex="999" name="btnSubmit"></p>
-            </td>
+                print ' tabindex="500"></td>';
+            print '<input type="hidden" id="hidRank" name="hidRank" value="' . $rank . '">';
+            print '<td><p><input type="submit" value="Update" tabindex="999" name="btnUpdate"></p></td>';
+            print '<td><p><input type="submit" value="Delete" tabindex="999" name="btnDelete"></p></td>
             </form>
             </tr>';
         }
-
-        if(isset($_POST['btnSubmit'])){
-            if(DEBUG){
-                print '<p>POST array:</p><pre>';
-                print_r($_POST);
-                print'</pre>';
-            }
-            
-            $grade = filter_var($_POST['txtGrade'], FILTER_SANITIZE_EMAIL);
-            $name = filter_var($_POST['txtName']);
-            $location = filter_var($_POST['txtLocation']);
-            $uncontrived = getData('chkUncontrived');
-            $obvious = getData('chkObvious');
-            $goodRock = getData('chkGoodRock');
-            $flatLanding = getData('chkFlatLanding');
-            $tall = getData('chkTall');
-            $goodSetting = getData('chkGoodSetting');
-        
-            if(!filter_var($grade)){
-                print '<p class="mistake">Please enter a valid grade.</p>';
-                $saveData = false;
-            }
-            if(!filter_var($name)){
-                print '<p class="mistake">Please enter a valid name.</p>';
-                $saveData = false;
-            }
-            if(!filter_var($location)){
-                print '<p class="mistake">Please enter a valid location.</p>';
-                $saveData = false;
-            }
-            
-            
-            if($saveData){
-                $sql = 'INSERT INTO tblTop100 SET ';
-                $sql .= 'fldRank = ?, ';
-                $sql .= 'fldGrade = ?, ';
-                $sql .= 'fldName = ?, ';
-                $sql .= 'fldLocation = ?, ';
-                $sql .= 'fldUncontrived = ?, ';
-                $sql .= 'fldObviousStart = ?, ';
-                $sql .= 'fldGoodRock = ?, ';
-                $sql .= 'fldFlatLanding = ?, ';
-                $sql .= 'fldTall = ?, ';
-                $sql .= 'fldGoodSetting = ?';
-        
-                $sql .= ' ON DUPLICATE KEY UPDATE ';
-                $sql .= 'fldGrade = ?, ';
-                $sql .= 'fldName = ?, ';
-                $sql .= 'fldLocation = ?, ';
-                $sql .= 'fldUncontrived = ?, ';
-                $sql .= 'fldObviousStart = ?, ';
-                $sql .= 'fldGoodRock = ?, ';
-                $sql .= 'fldFlatLanding = ?, ';
-                $sql .= 'fldTall = ?, ';
-                $sql .= 'fldGoodSetting = ?';
-        
-                $data = array();
-                $data[] = $rank;
-                $data[] = $grade;
-                $data[] = $name;
-                $data[] = $location;
-                $data[] = $uncontrived;
-                $data[] = $obvious;
-                $data[] = $goodRock;
-                $data[] = $flatLanding;
-                $data[] = $tall;
-                $data[] = $goodSetting;
-        
-                $data[] = $grade;
-                $data[] = $name;
-                $data[] = $location;
-                $data[] = $uncontrived;
-                $data[] = $obvious;
-                $data[] = $goodRock;
-                $data[] = $flatLanding;
-                $data[] = $tall;
-                $data[] = $goodSetting;
-        
-                if(DEBUG){
-                    print $thisDatabaseWriter->displayQuery($sql, $data);
-                }
-        
-                if($thisDatabaseWriter->insert($sql, $data)){
-                    print 'Updated!';
-                }
-            }
-        }
-		?>
-        </table>
-
-
-
-
-
-<!-- <?php
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-	$arrays = json_decode($_POST['idsJSON'], true);   
-     foreach($arrays as $name) {
-         printf($name);
-     }
-	if (!empty($user_name) && !empty($password) && !is_numeric($user_name)) {
-
-		//read from database
-		$query = "SELECT `fldPassword` FROM tblUser WHERE pmkUsername = ? limit 1";
-		$value = array($user_name);
-		echo $databaseWriter->displayQuery($query, $value);
-		$result = $databaseWriter->select($query, $value);
-
-		if ($result && $result[0]['fldPassword'] === $password) {
-			$_SESSION['id'] = $user_name;
-			header("Location: profile.php");
-			die;
-		}
-
-		echo "wrong username or password!";
-	} else {
-		echo "invalid username or password";
-	}
-}
-
-?> -->
-
-
-
-	
+        ?>
+    </table>
 </section>
 
-<script type="text/javascript">
-    $( ".row_drag" ).sortable({
-        delay: 100,
-        stop: function() {
-            var selectedRow = new Array();
-            $('.row_drag>tr').each(function() {
-                selectedRow.push($(this).attr("id"));
-            });
-        }
-    });
+<script>
+var row;
+function start(){
+  row = event.target;
+}
+function dragover(){
+  var e = event;
+  e.preventDefault();
+
+  let children= Array.from(e.target.parentNode.parentNode.children);
+  if(children.indexOf(e.target.parentNode)>children.indexOf(row))
+    e.target.parentNode.after(row);
+  else
+    e.target.parentNode.before(row);
+}
 </script>
