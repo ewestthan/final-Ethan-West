@@ -1,8 +1,8 @@
 CREATE TABLE `EWEST3_labs`.`top100` 
-    ( `fld` INT NOT NULL , 
+    ( `fldRank` INT UNIQUE KEY NOT NULL , 
     `fldGrade` INT NOT NULL , 
     `fldName` VARCHAR(25) NOT NULL , 
-    `fldState` VARCHAR(15) NOT NULL , 
+    `fldLocation` VARCHAR(15) NOT NULL , 
     `fldUncontrived` TINYINT(1) NOT NULL , 
     `fldObviousStart` TINYINT(1) NOT NULL , 
     `fldGoodRock` TINYINT(1) NOT NULL , 

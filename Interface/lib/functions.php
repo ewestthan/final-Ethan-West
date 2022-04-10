@@ -25,12 +25,16 @@ function check_login($dbUsername, $dbName)
 //Get trim and sanatize data
 function getData($field)
 {
-    if (!isset($_POST[$field])) {
-        $data = "";
+	if (!isset($_POST[$field])) {
+        $data = 0;
     } else {
         $data = htmlspecialchars(trim($_POST[$field]));
     }
     return $data;
 } 
 
+
+function verifyAlphaNum($testString){
+    return(preg_match ("/^([[:alnum:]]|-|\.| |\'|&|;|#)+$/", $testString));
+}
 ?>

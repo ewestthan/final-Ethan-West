@@ -11,19 +11,15 @@ make table headers sticky
 <?php
 include 'top.php';
 
-function printModal($id, $databaseWriter){
-    $sql = 'SELECT * FROM top100 WHERE fldPlace = "' . $id . '"';
-        
-    if (DEBUG) {
-        print $databaseWriter->displayQuery($sql);
-    }
-
-    $climb = $databaseWriter->select($sql);
-
-    print '<div id="myModal' . $climb[0]['fldPlace'] . '" class="modal">';
-    print '<div class="modal-content">';
-    print '<span class="close">&times;</span>';
-    print '<p>' . $climb[0]['fldName'] . '</p>';
+function printModal($climb){
+    print '<div id="myModal' . $climb['fldRank'] . '" class="modal">';
+        print '<div class="modal-content">';
+            print '<h3>' . $climb['fldName'] . '</h3>';            
+            print '<span class="close">&times;</span>';
+            print '<section class="flex-container">';
+                print '<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"></iframe>';
+                print '<p>' . $climb['fldDescription'] . '</p>';
+            print '</section>';
     print '</div></div>';
     print '</tr>' . PHP_EOL;
 }
@@ -53,14 +49,14 @@ function printModal($id, $databaseWriter){
         $sql = 'SELECT * FROM top100';
         
         if (DEBUG) {
-            print $databaseWriter->displayQuery($sql);
+            print $thisDatabaseWriter->displayQuery($sql);
         }
 
-        $climbs = $databaseWriter->select($sql);
+        $climbs = $thisDatabaseWriter->select($sql);
 
         foreach ($climbs as $climb) {
-            print '<tr onclick="showModal(' . $climb['fldPlace'] . ')" id="' . $climb['fldPlace'] . '">'; //include mouse click display image/description and links to vids
-            print '<td>' . $climb['fldPlace'] . '</td>';
+            print '<tr onclick="showModal(' . $climb['fldRank'] . ')" id="' . $climb['fldRank'] . '">'; //include mouse click display image/description and links to vids
+            print '<td>' . $climb['fldRank'] . '</td>';
             print '<td>V' . $climb['fldGrade'] . '</td>';
             print '<td>' . $climb['fldName'] . '</td>';
             print '<td>' . $climb['fldLocation'] . '</td>';
@@ -77,7 +73,7 @@ function printModal($id, $databaseWriter){
             if($climb['fldGoodSetting'] == 1){print '<td><i class="fa fa-check"></i></td>';}
             else{print '<td><i class="fa fa-remove"></i></td>';}
             print '<td>' . $climb['fldFinalRating'] . '</td>';
-            printModal($climb['fldPlace'], $databaseWriter);
+            printModal($climb, $thisDatabaseWriter);
         }
 		?>
         </tbody>
