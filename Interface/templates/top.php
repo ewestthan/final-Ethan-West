@@ -26,7 +26,6 @@
     require_once("../lib/database.php");
     require('../lib/passwords.php');
     $thisDatabaseWriter = new DataBase($dbUsername, 'w', $dbName);
-    $thisDatabaseReader = new DataBase($dbUsername, 'r', $dbName);
     require_once("../lib/functions.php");
     print'<body class="' . PATH_PARTS['filename'] . '">' . PHP_EOL;
     print'<!-- ***** START OF BODY ***** -->';

@@ -67,10 +67,15 @@ h3{
 table{
   align-items:center;
   justify-content: center;
+  margin: auto;
   border-collapse: collapse;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10+ and Edge */
   user-select: none; /* Standard syntax */
+}
+
+table:hover{
+  cursor: pointer;
 }
 
 th{
@@ -157,6 +162,7 @@ p{
   float: right;
   font-size: 28px;
   font-weight: bold;
+  margin: auto;
 }
 
 .close:hover,
@@ -164,4 +170,26 @@ p{
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+.hiddenForm{
+  display: none;
+}
+
+img{
+  height: 20px;
+  width: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+input{
+  display: block;
+  margin: auto;
+}
+
+button{
+  display: block;
+  margin: auto;
 }

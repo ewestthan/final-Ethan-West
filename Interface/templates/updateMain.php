@@ -7,6 +7,46 @@ make table headers sticky
 
 <?php
 include 'top.php';
+function displayForm($rowNumber, $rank){
+    $grade = '';
+    $name = '';
+    $location = '';
+    $uncontrived = 0;
+    $obvious = 0;
+    $goodRock = 0;
+    $flatLanding = 0;
+    $tall = 0;
+    $goodSetting = 0;
+    
+    print '<tr  id="hiddenForm' . $rowNumber . '" style="display:none;">';
+    print '<form action="' . PHP_SELF . '" id="frmUpdate' . $rank . '" method="post">';
+    print '<td>' . $rowNumber . '<span class="close" id="close' . $rowNumber . '">&times;</span></td>';
+    print '<td class="textbox"><input type="text" id="txtGrade" name="txtGrade" value="' . $grade . '" tabindex="300"></td>';
+    print '<td class="textbox"><input type="text" id="txtName" name="txtName" value="' . $name . '" tabindex="300"></td>';
+    print '<td class="textbox"><input type="text" id="txtLocation" name="txtLocation" value="' . $location . '" tabindex="300"></td>';
+    print '<td class="checkbox"><input type="checkbox" id="chkUncontrived" value ="1" name="chkUncontrived" '; 
+    if($uncontrived == 1) print 'checked'; 
+    print ' tabindex="500"></td>';
+    print '<td class="checkbox"><input type="checkbox" id="chkObvious" value ="1" name="chkObvious" ';
+    if($obvious == 1) print 'checked'; 
+    print ' tabindex="500"></td>';
+    print '<td class="checkbox"><input type="checkbox" id="chkGoodRock" value ="1" name="chkGoodRock" ';
+        if($goodRock == 1) print 'checked'; 
+        print ' tabindex="500"></td>';
+    print '<td class="checkbox"><input type="checkbox" id="chkFlatLanding" value ="1" name="chkFlatLanding" ';
+        if($flatLanding == 1) print 'checked'; 
+        print ' tabindex="500"></td>';
+    print '<td class="checkbox"><input type="checkbox" id="chkTall" value ="1" name="chkTall" ';
+        if($tall == 1) print 'checked'; 
+        print ' tabindex="500"></td>';
+    print '<td class="checkbox"><input type="checkbox" id="chkGoodSetting" value ="1" name="chkGoodSetting" ';
+        if($goodSetting == 1) print 'checked';
+        print ' tabindex="500"></td>';
+    print '<input type="hidden" id="hidRank" name="hidRank" value="' . $rank . '">';
+    print '<td colspan=2><p><input type="submit" value="Save" tabindex="999" name="btnUpdate"></p></td>
+    </form></tr>';
+}
+
 if(isset($_POST['btnDelete'])){
     if(DEBUG){
         print '<p>POST array:</p><pre>';
@@ -41,6 +81,9 @@ if(isset($_POST['btnUpdate'])){
     $flatLanding = getData('chkFlatLanding');
     $tall = getData('chkTall');
     $goodSetting = getData('chkGoodSetting');
+    $video = '';
+    $description = '';
+    $finalRating = 0;
 
     if(!filter_var($grade)){
         print '<p class="mistake">Please enter a valid grade.</p>';
@@ -57,7 +100,7 @@ if(isset($_POST['btnUpdate'])){
     
     
     if($saveData){
-        $sql = 'INSERT INTO tblTop100 SET ';
+        $sql = 'INSERT INTO top100 SET ';
         $sql .= 'fldRank = ?, ';
         $sql .= 'fldGrade = ?, ';
         $sql .= 'fldName = ?, ';
@@ -67,7 +110,11 @@ if(isset($_POST['btnUpdate'])){
         $sql .= 'fldGoodRock = ?, ';
         $sql .= 'fldFlatLanding = ?, ';
         $sql .= 'fldTall = ?, ';
-        $sql .= 'fldGoodSetting = ?';
+        $sql .= 'fldGoodSetting = ?, ';
+        $sql .= 'fldImage = ?, ';
+        $sql .= 'fldDescription = ?, ';
+        $sql .= 'fldFinalRating = ?';
+
 
         $sql .= ' ON DUPLICATE KEY UPDATE ';
         $sql .= 'fldGrade = ?, ';
@@ -78,7 +125,10 @@ if(isset($_POST['btnUpdate'])){
         $sql .= 'fldGoodRock = ?, ';
         $sql .= 'fldFlatLanding = ?, ';
         $sql .= 'fldTall = ?, ';
-        $sql .= 'fldGoodSetting = ?';
+        $sql .= 'fldGoodSetting = ?, ';
+        $sql .= 'fldImage = ?, ';
+        $sql .= 'fldDescription = ?, ';
+        $sql .= 'fldFinalRating = ?';
 
         $data = array();
         $data[] = $rank;
@@ -91,6 +141,9 @@ if(isset($_POST['btnUpdate'])){
         $data[] = $flatLanding;
         $data[] = $tall;
         $data[] = $goodSetting;
+        $data[] = $video;
+        $data[] = $description;
+        $data[] = $finalRating;
 
         $data[] = $grade;
         $data[] = $name;
@@ -101,38 +154,26 @@ if(isset($_POST['btnUpdate'])){
         $data[] = $flatLanding;
         $data[] = $tall;
         $data[] = $goodSetting;
+        $data[] = $video;
+        $data[] = $description;
+        $data[] = $finalRating;
 
         if(DEBUG){
             print $thisDatabaseWriter->displayQuery($sql, $data);
         }
-
         if($thisDatabaseWriter->insert($sql, $data)){
             print 'Updated!';
         }
+        else{
+            print "Couldn't update";
+        }
     }
-}
-
-function printModal($id, $thisDatabaseWriter){
-    $sql = 'SELECT * FROM top100 WHERE fldRank = "' . $id . '"';
-        
-    if (DEBUG) {
-        print $thisDatabaseWriter->displayQuery($sql);
-    }
-
-    $climb = $thisDatabaseWriter->select($sql);
-
-    print '<div id="myModal' . $climb[0]['fldRank'] . '" class="modal">';
-    print '<div class="modal-content">';
-    print '<span class="close">&times;</span>';
-    print '<p>' . $climb[0]['fldName'] . '</p>';
-    print '</div></div>';
-    print '</tr>' . PHP_EOL;
 }
 ?>
 
 <section class="tab">
     <h1>Eric's Top 100 double digits</h1>
-    
+    <button type="button" onClick="showHideAddButtons()">Drag and Drop on</button>
     <table id="dndTable">
         <tr>
             <th>Rank</th>  
@@ -145,7 +186,7 @@ function printModal($id, $thisDatabaseWriter){
             <th>Flat Landing</th>
             <th>Tall</th>
             <th>Beautiful setting</th>
-            <th>Final Rating</th>
+            <th colspan=2></th>
         </tr>
 		<?php
         $sql = 'SELECT * FROM top100 ORDER BY fldRank ASC';
@@ -153,8 +194,15 @@ function printModal($id, $thisDatabaseWriter){
             print $thisDatabaseWriter->displayQuery($sql);
         }
         $climbs = $thisDatabaseWriter->select($sql);
+        $rowNumber = 1;
+        $rank = 1;
+        print '<tr id="addButton' . $rowNumber . '" class="addButton" style="display:none">';
+        print '<td colspan=12><button onClick="showHideForm(' . $rowNumber . ')"><img src="../images/plus.png"></td>';
+        print '</tr>';   
+        displayForm($rowNumber, $rank);
 
         foreach ($climbs as $climb) {
+            $rowNumber++;
             $rank = $climb['fldRank'];
             $grade = $climb['fldGrade'];
             $name = $climb['fldName'];
@@ -195,6 +243,35 @@ function printModal($id, $thisDatabaseWriter){
             print '<td><p><input type="submit" value="Delete" tabindex="999" name="btnDelete"></p></td>
             </form>
             </tr>';
+            print '<div id="myModal' . $climb['fldRank'] . '" class="modal">';
+                print '<div class="modal-content">';
+                    print '<h3>' . $climb['fldName'] . '</h3>';            
+                    print '<span class="close">&times;</span>';
+                    print '<section class="flex-container">';
+                        print '<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"></iframe>';
+                        print '<p>' . $climb['fldDescription'] . '</p>';
+                    print '</section>';
+            print '</div></div>';
+            print '</tr>' . PHP_EOL;
+            
+            $rowNumber++;
+            $rank++;
+            $grade = '';
+            $name = '';
+            $location = '';
+            $uncontrived = 0;
+            $obvious = 0;
+            $goodRock = 0;
+            $flatLanding = 0;
+            $tall = 0;
+            $goodSetting = 0;
+            
+            
+            print '<tr id="addButton' . $rowNumber . '" class="addButton" style="display:none">';
+            print '<td colspan=12><button onClick="showHideForm(' . $rowNumber . ')"><img src="../images/plus.png"></td>';
+            print '</tr>';   
+            displayForm($rowNumber, $rank);         
+            
         }
         ?>
     </table>
@@ -214,5 +291,42 @@ function dragover(){
     e.target.parentNode.after(row);
   else
     e.target.parentNode.before(row);
+}
+
+function showHideAddButtons() {
+  var buttons = document.getElementsByClassName('addButton');
+  for (let i = 0; i < buttons.length; i++) {
+    if (buttons[i] != null) {
+      if (buttons[i].style.display == "table-row") {
+        buttons[i].style.display = 'none';
+      }
+      else{
+        buttons[i].style.display = 'table-row';
+      }
+    }
+  }
+  return false;
+}
+
+function showHideForm(rowNumber) {
+    var form = document.getElementById('hiddenForm' + rowNumber);
+    var button = document.getElementById('addButton' + rowNumber);
+    let span = document.getElementById("close" + rowNumber);
+
+    if (form != null) {
+        if (form.style.display == "table-row") {
+            form.style.display = 'none';
+            button.style.display = 'block';
+        }
+        else{
+            form.style.display = 'table-row';
+            button.style.display = 'none';
+        }
+        span.onclick = function(event) {
+            form.style.display = "none";
+            button.style.display = 'table-row';
+        }
+        return false;
+    }
 }
 </script>

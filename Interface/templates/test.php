@@ -2,44 +2,84 @@
 include "top.php";
 ?>
 
-<!-- Trigger/Open The Modal -->
-<button id="myBtn">Open Modal</button>
+<section class="tab">
+    <h1>Testing Page</h1>
+    <button type="button" onClick="showHideAddButtons()">Drag and Drop on</button>
+    <table>
+        <tr>
+            <th>Rank</th>  
+            <th>Grade</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Uncontrived</th>
+            <th>Obvious Start</th>
+            <th>Good Rock</th>
+            <th>Flat Landing</th>
+            <th>Tall</th>
+            <th>Beautiful setting</th>
+            <th>Final Rating</th>
+        </tr>
 
-<!-- The Modal -->
-<div id="myModal" class="modal">
+        <tr class="addButton" id='addButton' style="display:none">
+          <td colspan=12><button onClick="showHideForm('hiddenForm')"><img src="../images/plus.png"></button></td>
+        </tr>
 
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <p>Some text in the Modal..</p>
-  </div>
+        <tr id="hiddenForm" style="display: none;">
+          <form action="<?php print PHP_SELF ?>" id="frmUpdate" method="post">
+            <td><span class="close">&times;</span></td>
+            <td class="textbox" colspan=12><input type="text" id="txtGrade" name="txtGrade" value="Grade" tabindex="300"></td>
+            <td><p><input type="submit" value="Update" tabindex="999" name="btnUpdate"></p></td>
+          </form>
+        </tr>
 
-</div>
+        <tr class="addButton" id='addButton' style="display:none">
+          <td colspan=12><button onClick="showHideForm('hiddenForm')"><img src="../images/plus.png"></button></td>
+        </tr>
+
+        <tr id="hiddenForm" style="display: none;">
+          <form action="<?php print PHP_SELF ?>" id="frmUpdate" method="post">
+            <td><span class="close">&times;</span></td>
+            <td class="textbox" colspan=12><input type="text" id="txtGrade" name="txtGrade" value="Grade" tabindex="300"></td>
+            <td><p><input type="submit" value="Update" tabindex="999" name="btnUpdate"></p></td>
+          </form>
+        </tr>    
+    </table>
+</section>
 
 <script>
-    // Get the modal
-var modal = document.getElementById("myModal");
-
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks on the button, open the modal
-btn.onclick = function() {
-  modal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
+function showHideAddButtons() {
+  var buttons = document.getElementsByClassName('addButton');
+  for (let i = 0; i < buttons.length; i++) {
+    if (buttons[i] != null) {
+      if (buttons[i].style.display == "table-row") {
+        buttons[i].style.display = 'none';
+      }
+      else{
+        buttons[i].style.display = 'table-row';
+      }
+    }
   }
+  return false;
 }
+
+function showHideForm(rank) {
+         	var form = document.getElementById('hiddenForm');
+          var button = document.getElementById('addButton');
+          let span = document.getElementsByClassName("close")[0];
+         	if (form != null) {
+         		if (form.style.display == "table-row") {
+         			form.style.display = 'none';
+              button.style.display = 'table-row';
+         		}
+         		else{
+         			form.style.display = 'table-row';
+              button.style.display = 'none';
+         		}
+             span.onclick = function(event) {
+                form.style.display = "none";
+                button.style.display = 'table-row';
+              }
+         		return false;
+         	}
+         }
 </script>

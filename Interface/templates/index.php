@@ -1,6 +1,5 @@
 <!-- TODO
 add sorting function by clicking table headers, sort by grade, attributes, etc
-fix "x" span element on modal to exit modal
 finish setting up modal
 add function to detirmine final Rating
 make table headers sticky
@@ -12,9 +11,8 @@ add description on right
 display row on bottom
 
 Editing:
-add the form to add climbs
-add functionality to edit checkmarks
-save updated data to database
+Fix rank primary key on update
+Save order after drag and drop
 
 later on
 add personal lists
@@ -25,22 +23,14 @@ add upvotes and downvotes to each climb
 <?php
 include 'top.php';
 
-function printModal($id, $thisDatabaseWriter){
-    $sql = 'SELECT * FROM top100 WHERE fldRank = "' . $id . '"';
-        
-    if (DEBUG) {
-        print $thisDatabaseWriter->displayQuery($sql);
-    }
-
-    $climb = $thisDatabaseWriter->select($sql);
-
-    print '<div id="myModal' . $climb[0]['fldRank'] . '" class="modal">';
+function printModal($climb){
+    print '<div id="myModal' . $climb['fldRank'] . '" class="modal">';
         print '<div class="modal-content">';
-            print '<h3>' . $climb[0]['fldName'] . '</h3>';            
+            print '<h3>' . $climb['fldName'] . '</h3>';            
             print '<span class="close">&times;</span>';
             print '<section class="flex-container">';
                 print '<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"></iframe>';
-                print '<p>' . $climb[0]['fldDescription'] . '</p>';
+                print '<p>' . $climb['fldDescription'] . '</p>';
             print '</section>';
     print '</div></div>';
     print '</tr>' . PHP_EOL;
@@ -92,7 +82,7 @@ function printModal($id, $thisDatabaseWriter){
             if($climb['fldGoodSetting'] == 1){print '<td><i class="fa fa-check"></i></td>';}
             else{print '<td><i class="fa fa-remove"></i></td>';}
             print '<td>' . $climb['fldFinalRating'] . '</td>';
-            printModal($climb['fldRank'], $thisDatabaseWriter);
+            printModal($climb);
         }
         print '</table>';
 		?>

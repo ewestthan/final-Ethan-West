@@ -1,5 +1,5 @@
 <?php 
-define('DEBUG', FALSE);
+define('DEBUG', false);
 
 define('DEVELOPMENT', true);
 
