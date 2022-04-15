@@ -1,7 +1,13 @@
 <?php 
 include 'top.php';
 $user_data = check_login($dbUsername, $dbName);
-$listId = (isset($_GET['tbl'])) ? (int) htmlspecialchars($_GET['tbl']) : 0;
+
+$listId = isset($_GET['tbl']) ? (int) htmlspecialchars($_GET['tbl']) : 0;
+//validate record exists
+if(isset($_POST['hidListId'])){
+    $listId = (int) htmlspecialchars($_POST['hidListId']);
+}
+
 $sql = 'SELECT * FROM tblLists WHERE pmkListId = "' . $listId . '"';
 if (DEBUG) {
     print $thisDatabaseWriter->displayQuery($sql);
@@ -9,8 +15,6 @@ if (DEBUG) {
 $list = $thisDatabaseWriter->select($sql);
 
 function displayForm($rowNumber, $rank, $listId){
-    $rowNumber++;
-    $rank++; 
     $grade = '';
     $name = '';
     $location = '';
@@ -59,12 +63,37 @@ if(isset($_POST['btnDelete'])){
     }
     $rank = filter_var($_POST['hidRank']);
     
-    $sql = 'DELETE FROM top100 WHERE fldRank = '. $rank;
+    $sql = 'DELETE FROM top100 WHERE pmkClimbId = '. $rank . ' AND fnkListId = ' . $listId;
     $data = '';
     if(DEBUG){
         print $thisDatabaseReader->displayQuery($sql, $data);
     }
     $thisDatabaseWriter->select($sql, $data);
+}
+
+if(isset($_POST['btnDeleteList'])){
+    if(DEBUG){
+        print '<p>POST array:</p><pre>';
+        print_r($_POST);
+        print'</pre>';
+    }
+    $listId = filter_var($_POST['hidListId']);
+    
+    $sql = 'DELETE FROM top100 WHERE fnkListId = ' . $listId;
+    $data = '';
+    if(DEBUG){
+        print $thisDatabaseReader->displayQuery($sql, $data);
+    }
+    $thisDatabaseWriter->select($sql, $data);
+    
+    $sql = 'DELETE FROM tblLists WHERE pmkListId = ' . $listId;
+    $data = '';
+    if(DEBUG){
+        print $thisDatabaseReader->displayQuery($sql, $data);
+    }
+    $thisDatabaseWriter->select($sql, $data);
+    header("Location: profile.php");
+	die;
 }
 
 if(isset($_POST['btnUpdate'])){
@@ -180,7 +209,7 @@ if(isset($_POST['btnUpdate'])){
 }
 ?>
 
-<section class="tab">
+<section>
     <h1><?php print $list[0]['fldListName'] ?></h1>
     <button type="button" onClick="showHideAddButtons()">Drag and Drop on</button>
     <table id="dndTable">
@@ -208,7 +237,7 @@ if(isset($_POST['btnUpdate'])){
         print '<tr id="addButton' . $rowNumber . '" class="addButton" style="display:table-row">';
         print '<td colspan=12><button onClick="showHideForm(' . $rowNumber . ')"><img src="../images/plus.png"></td>';
         print '</tr>';   
-        displayForm($rowNumber, $rank);
+        displayForm($rowNumber, $rank, $listId);
 
         foreach ($climbs as $climb) {
             $rowNumber++;
@@ -264,14 +293,19 @@ if(isset($_POST['btnUpdate'])){
             print '</div></div>';
             print '</tr>' . PHP_EOL;
             
-            displayForm($rowNumber, $rank, $listId);
+            $rowNumber++;
+            $rank++; 
+            
             print '<tr id="addButton' . $rowNumber . '" class="addButton" style="display:none">';
             print '<td colspan=12><button onClick="showHideForm(' . $rowNumber . ')"><img src="../images/plus.png"></td>';
-            print '</tr>';   
-                     
-            
+            print '</tr>';     
+            displayForm($rowNumber, $rank, $listId);
         }
         ?>
     </table>
+    <form action="<?php print PHP_SELF?>" id="frmDelete" method="post">
+        <input type="hidden" id="hidListId" name="hidListId" value="<?php print $listId; ?>">
+        <input name="btnDeleteList" id="button" type="submit" value="Delete List">
+	</form>
 </section>
 

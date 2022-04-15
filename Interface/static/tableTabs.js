@@ -1,7 +1,7 @@
-function openSession(evt, SessionId) {
+function showTable(evt, SessionId) {
   // Declare all variables
   var i, tabcontent, tablinks, activeTab;
-
+  
   // Get all elements with class="tabcontent" and hide them
   tabcontent = document.getElementsByClassName("tabcontent");
   for (i = 0; i < tabcontent.length; i++) {

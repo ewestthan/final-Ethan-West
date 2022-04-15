@@ -1,7 +1,6 @@
 <?php
 include 'top.php';
 include 'modal.php';
-session_start();
 $user_data = check_login($dbUsername, $dbName);
 
 if(isset($_POST['btnCreateTable'])){
@@ -41,7 +40,6 @@ print '<h3 class="userinfo">' . $user_data[0]['fldFirstName'] . ' ' . $user_data
 print '<p class="userinfo">' . $user_data[0]['fldAge'] . ' years old';
 ?>
 
-
 <button href='updateMain.php'>Create New</button>
 <form action="<?php print PHP_SELF?>" id="frmCreateTable" method="post">
         <label for="txtListName" id="label">Name</label>
@@ -51,32 +49,48 @@ print '<p class="userinfo">' . $user_data[0]['fldAge'] . ' years old';
 </form>
 
 <section class="tab">
-    <h1>My list</h1>
-    <table id="mainTable">
-        <tr>
-            <th id='rank' onclick='sortByRank()'>Rank</th>  
-            <th id='grade' onclick='sortByHardest()'>Grade</th>
-            <th>Name</th>
-            <th>Location</th>
-            <th>Uncontrived</th>
-            <th>Obvious Start</th>
-            <th>Good Rock</th>
-            <th>Flat Landing</th>
-            <th>Tall</th>
-            <th>Beautiful setting</th>
-            <th>Final Rating</th>
-        </tr>
-		<?php
-
-        $sql = 'SELECT * FROM top100 JOIN tblLists ON pmkListId = fnkListId JOIN tblUsers ON pmkUsername = fnkUsername WHERE pmkUsername = "' . $user_data[0]['pmkUsername'] . '"';
+<?php
+    $sql = 'SELECT * FROM tblLists JOIN tblUsers ON pmkUsername = fnkUsername WHERE pmkUsername = "' . $user_data[0]['pmkUsername'] . '"';
+    if (DEBUG) {
+        print $thisDatabaseWriter->displayQuery($sql);
+    }
+    $lists = $thisDatabaseWriter->select($sql);
+    $counter = 1;
+    foreach ($lists as $list) {
+        if ($counter == 1) {
+            $default = ' id="default"';
+        } else {
+            $default = '';
+        }
+        print '<button' . $default . ' class="tablinks" onclick="showTable(event, \'List' . $list['pmkListId'] . '\')">' . $list['fldListName'] . '</button>' . PHP_EOL;
+        $counter++;
+    }
         
+    foreach($lists as $list){
+        
+        print '<section id="List' . $list['pmkListId'] . '" class="tabcontent">';
+        print '<table id="mainTable">';
+        print '<tr>';
+        print '<th id="rank" onclick="sortByRank()">Rank</th>';
+        print '<th id="grade" onclick="sortByHardest()">Grade</th>';
+        print '<th>Name</th>';
+        print '<th>Location</th>';
+        print '<th>Uncontrived</th>';
+        print '<th>Obvious Start</th>';
+        print '<th>Good Rock</th>';
+        print '<th>Flat Landing</th>';
+        print '<th>Tall</th>';
+        print '<th>Beautiful setting</th>';
+        print '<th>Final Rating</th>';
+        print '</tr>';
+
+        $sql = 'SELECT * FROM top100 JOIN tblLists ON pmkListId = fnkListId WHERE fnkListId = ' . $list['pmkListId'];
         if (DEBUG) {
             print $thisDatabaseWriter->displayQuery($sql);
         }
+        $list = $thisDatabaseWriter->select($sql);
 
-        $climbs = $thisDatabaseWriter->select($sql);
-
-        foreach ($climbs as $climb) {
+        foreach ($list as $climb) {
             print '<tr onclick="showModal(' . $climb['fldRank'] . ')">'; //include mouse click display image/description and links to vids
             print '<td>' . $climb['fldRank'] . '</td>';
             print '<td>V' . $climb['fldGrade'] . '</td>';
@@ -95,11 +109,12 @@ print '<p class="userinfo">' . $user_data[0]['fldAge'] . ' years old';
             if($climb['fldGoodSetting'] == 1){print '<td><i class="fa fa-check"></i></td>';}
             else{print '<td><i class="fa fa-remove"></i></td>';}
             print '<td>' . $climb['fldFinalRating'] . '</td>';
-            printModal($climb);
+            // printModal($climb);
         }
-        print '</table>';
-		?>
-</section>
+    print '</table>';
+    print '</section>';
+    }
+    ?>
 </section>
 </body>
 </html>

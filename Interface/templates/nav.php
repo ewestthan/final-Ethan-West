@@ -17,6 +17,16 @@
             }
             ?>" href = "updateMain.php">Edit</a>
         </li>
+        <?php
+        if (isset($_SESSION["id"])) {
+            print '<li><a class="';
+            if(PATH_PARTS['filename'] == "profile") {
+                print 'activePage';
+            }
+            print '" href="profile.php">My Lists</a></li>';
+        } 
+        ?>
+        </li>
         <li style='float:right'>
             <?php
             if (isset($_SESSION["id"])) {
