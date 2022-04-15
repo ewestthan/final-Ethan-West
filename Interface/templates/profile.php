@@ -1,5 +1,6 @@
 <?php
 include 'top.php';
+include 'modal.php';
 session_start();
 $user_data = check_login($dbUsername, $dbName);
 
@@ -9,8 +10,12 @@ if(isset($_POST['btnCreateTable'])){
         print_r($_POST);
         print'</pre>';
     }
+
     $listName = filter_var($_POST['txtListName']);
     $username = filter_var($_POST['hidUsername']);
+    
+    print $listName;
+    print $username;
     $sql = 'INSERT INTO tblLists SET ';
     $sql .= 'fnkUsername = ?, ';
     $sql .= 'fldListName = ?';
@@ -19,12 +24,12 @@ if(isset($_POST['btnCreateTable'])){
     $data[] = $username;
     $data[] = $listName;
 
-    $data = '';
     if(DEBUG){
-        print $thisDatabaseReader->displayQuery($sql, $data);
+        print $thisDatabaseWriter->displayQuery($sql, $data);
     }
     if($thisDatabaseWriter->select($sql, $data)){
-        header("Location: updateMain.php?tbl=" . $listId);
+        header("Location: profileEdit.php?tbl=" . $listId);
+        exit();
     }
 }
 ?>
@@ -40,8 +45,8 @@ print '<p class="userinfo">' . $user_data[0]['fldAge'] . ' years old';
 <button href='updateMain.php'>Create New</button>
 <form action="<?php print PHP_SELF?>" id="frmCreateTable" method="post">
         <label for="txtListName" id="label">Name</label>
-		<input id="text" type="text" name="txtListName"><br><br>
-        <input id="text" type="text" name="txtListName"><br><br>
+		<input id="text" type="text" name="txtListName">
+        <p><input id="text" type="hidden" name="hidUsername" value=<?php print $user_data[0]['pmkUsername']; ?>></p>
 		<input name="btnCreateTable" id="button" type="submit" value="submit">
 </form>
 
@@ -63,10 +68,10 @@ print '<p class="userinfo">' . $user_data[0]['fldAge'] . ' years old';
         </tr>
 		<?php
 
-        $sql = 'SELECT * FROM top100 JOIN tblUsers ON pmkUsername = fnkUser JOIN tblLists ON pmkListId = fnkListId WHERE pmkUsername = ' . $user_data[0]['pmkUsername'];
+        $sql = 'SELECT * FROM top100 JOIN tblLists ON pmkListId = fnkListId JOIN tblUsers ON pmkUsername = fnkUsername WHERE pmkUsername = "' . $user_data[0]['pmkUsername'] . '"';
         
         if (DEBUG) {
-            print $databaseWriter->displayQuery($sql);
+            print $thisDatabaseWriter->displayQuery($sql);
         }
 
         $climbs = $thisDatabaseWriter->select($sql);

@@ -1,13 +1,16 @@
-<!-- TODO
-finish setting up modal
-add function to detirmine final Rating
-make table headers sticky
-
--->
-
-<?php
+<?php 
 include 'top.php';
-function displayForm($rowNumber, $rank){
+$user_data = check_login($dbUsername, $dbName);
+$listId = (isset($_GET['tbl'])) ? (int) htmlspecialchars($_GET['tbl']) : 0;
+$sql = 'SELECT * FROM tblLists WHERE pmkListId = "' . $listId . '"';
+if (DEBUG) {
+    print $thisDatabaseWriter->displayQuery($sql);
+}
+$list = $thisDatabaseWriter->select($sql);
+
+function displayForm($rowNumber, $rank, $listId){
+    $rowNumber++;
+    $rank++; 
     $grade = '';
     $name = '';
     $location = '';
@@ -43,11 +46,10 @@ function displayForm($rowNumber, $rank){
         if($goodSetting == 1) print 'checked';
         print ' tabindex="500"></td>';
     print '<input type="hidden" id="hidRank" name="hidRank" value="' . $rank . '">';
+    print '<input type="hidden" id="hidListId" name="hidListId" value="' . $listId . '">';
     print '<td colspan=2><p><input type="submit" value="Save" tabindex="999" name="btnUpdate"></p></td>
     </form></tr>';
 }
-
-$tblName = (isset($_GET['tbl'])) ? (int) htmlspecialchars($_GET['tbl']) : 0;
 
 if(isset($_POST['btnDelete'])){
     if(DEBUG){
@@ -74,6 +76,7 @@ if(isset($_POST['btnUpdate'])){
     $saveData = true;
 
     $rank = filter_var($_POST['hidRank']);
+    $rank = filter_var($_POST['hidListId']);
     $grade = filter_var($_POST['txtGrade']);
     $name = filter_var($_POST['txtName']);
     $location = filter_var($_POST['txtLocation']);
@@ -103,6 +106,7 @@ if(isset($_POST['btnUpdate'])){
     
     if($saveData){
         $sql = 'INSERT INTO top100 SET ';
+        $sql .= 'fnkListId = ?, ';
         $sql .= 'fldRank = ?, ';
         $sql .= 'fldGrade = ?, ';
         $sql .= 'fldName = ?, ';
@@ -119,6 +123,7 @@ if(isset($_POST['btnUpdate'])){
 
 
         $sql .= ' ON DUPLICATE KEY UPDATE ';
+        $sql .= 'fnkListId = ?, ';
         $sql .= 'fldGrade = ?, ';
         $sql .= 'fldName = ?, ';
         $sql .= 'fldLocation = ?, ';
@@ -133,6 +138,7 @@ if(isset($_POST['btnUpdate'])){
         $sql .= 'fldFinalRating = ?';
 
         $data = array();
+        $data[] = $listId;
         $data[] = $rank;
         $data[] = $grade;
         $data[] = $name;
@@ -147,6 +153,7 @@ if(isset($_POST['btnUpdate'])){
         $data[] = $description;
         $data[] = $finalRating;
 
+        $data[] = $listId;
         $data[] = $grade;
         $data[] = $name;
         $data[] = $location;
@@ -174,7 +181,7 @@ if(isset($_POST['btnUpdate'])){
 ?>
 
 <section class="tab">
-    <h1>Eric's Top 100 double digits</h1>
+    <h1><?php print $list[0]['fldListName'] ?></h1>
     <button type="button" onClick="showHideAddButtons()">Drag and Drop on</button>
     <table id="dndTable">
         <tr>
@@ -191,14 +198,14 @@ if(isset($_POST['btnUpdate'])){
             <th colspan=2></th>
         </tr>
 		<?php
-        $sql = 'SELECT * FROM top100 ORDER BY fldRank ASC';
+        $sql = 'SELECT * FROM top100 WHERE fnkListId = ' . $listId . ' ORDER BY fldRank ASC';
         if (DEBUG) {
             print $thisDatabaseWriter->displayQuery($sql);
         }
         $climbs = $thisDatabaseWriter->select($sql);
         $rowNumber = 1;
         $rank = 1;
-        print '<tr id="addButton' . $rowNumber . '" class="addButton" style="display:none">';
+        print '<tr id="addButton' . $rowNumber . '" class="addButton" style="display:table-row">';
         print '<td colspan=12><button onClick="showHideForm(' . $rowNumber . ')"><img src="../images/plus.png"></td>';
         print '</tr>';   
         displayForm($rowNumber, $rank);
@@ -241,30 +248,30 @@ if(isset($_POST['btnUpdate'])){
                 if($goodSetting == 1) print 'checked';
                 print ' tabindex="500"></td>';
             print '<input type="hidden" id="hidRank" name="hidRank" value="' . $rank . '">';
+            print '<input type="hidden" id="hidListId" name="hidListId" value="' . $listId . '">';
             print '<td><p><input type="submit" value="Update" tabindex="999" name="btnUpdate"></p></td>';
             print '<td><p><input type="submit" value="Delete" tabindex="999" name="btnDelete"></p></td>
             </form>
             </tr>';
+            print '<div id="myModal' . $climb['fldRank'] . '" class="modal">';
+                print '<div class="modal-content">';
+                    print '<h3>' . $climb['fldName'] . '</h3>';            
+                    print '<span class="close">&times;</span>';
+                    print '<section class="flex-container">';
+                        print '<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"></iframe>';
+                        print '<p>' . $climb['fldDescription'] . '</p>';
+                    print '</section>';
+            print '</div></div>';
+            print '</tr>' . PHP_EOL;
             
-            $rowNumber++;
-            $rank++;
-            $grade = '';
-            $name = '';
-            $location = '';
-            $uncontrived = 0;
-            $obvious = 0;
-            $goodRock = 0;
-            $flatLanding = 0;
-            $tall = 0;
-            $goodSetting = 0;
-            
-            
+            displayForm($rowNumber, $rank, $listId);
             print '<tr id="addButton' . $rowNumber . '" class="addButton" style="display:none">';
             print '<td colspan=12><button onClick="showHideForm(' . $rowNumber . ')"><img src="../images/plus.png"></td>';
             print '</tr>';   
-            displayForm($rowNumber, $rank);         
+                     
             
         }
         ?>
     </table>
 </section>
+
