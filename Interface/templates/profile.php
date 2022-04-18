@@ -13,8 +13,6 @@ if(isset($_POST['btnCreateTable'])){
     $listName = filter_var($_POST['txtListName']);
     $username = filter_var($_POST['hidUsername']);
     
-    print $listName;
-    print $username;
     $sql = 'INSERT INTO tblLists SET ';
     $sql .= 'fnkUsername = ?, ';
     $sql .= 'fldListName = ?';
@@ -28,7 +26,7 @@ if(isset($_POST['btnCreateTable'])){
     }
     if($thisDatabaseWriter->select($sql, $data)){
         header("Location: profileEdit.php?tbl=" . $listId);
-        exit();
+        die();
     }
 }
 ?>
@@ -40,7 +38,6 @@ print '<h3 class="userinfo">' . $user_data[0]['fldFirstName'] . ' ' . $user_data
 print '<p class="userinfo">' . $user_data[0]['fldAge'] . ' years old';
 ?>
 
-<button href='updateMain.php'>Create New</button>
 <form action="<?php print PHP_SELF?>" id="frmCreateTable" method="post">
         <label for="txtListName" id="label">Name</label>
 		<input id="text" type="text" name="txtListName">
@@ -67,8 +64,8 @@ print '<p class="userinfo">' . $user_data[0]['fldAge'] . ' years old';
     }
         
     foreach($lists as $list){
-        
-        print '<section id="List' . $list['pmkListId'] . '" class="tabcontent">';
+        $listId = $list['pmkListId'];
+        print '<section id="List' . $listId . '" class="tabcontent">';
         print '<table id="mainTable">';
         print '<tr>';
         print '<th id="rank" onclick="sortByRank()">Rank</th>';
@@ -84,7 +81,7 @@ print '<p class="userinfo">' . $user_data[0]['fldAge'] . ' years old';
         print '<th>Final Rating</th>';
         print '</tr>';
 
-        $sql = 'SELECT * FROM top100 JOIN tblLists ON pmkListId = fnkListId WHERE fnkListId = ' . $list['pmkListId'];
+        $sql = 'SELECT * FROM top100 JOIN tblLists ON pmkListId = fnkListId WHERE fnkListId = ' . $listId;
         if (DEBUG) {
             print $thisDatabaseWriter->displayQuery($sql);
         }
@@ -109,10 +106,12 @@ print '<p class="userinfo">' . $user_data[0]['fldAge'] . ' years old';
             if($climb['fldGoodSetting'] == 1){print '<td><i class="fa fa-check"></i></td>';}
             else{print '<td><i class="fa fa-remove"></i></td>';}
             print '<td>' . $climb['fldFinalRating'] . '</td>';
-            // printModal($climb);
+            printModal($climb);
         }
     print '</table>';
+    print '<a href = profileEdit.php?tbl=' . $listId . '><button>Edit List</button></a>';
     print '</section>';
+
     }
     ?>
 </section>

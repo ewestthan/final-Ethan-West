@@ -173,7 +173,7 @@ if(isset($_POST['btnUpdate'])){
 }
 ?>
 
-<section class="tab">
+<section>
     <h1>Eric's Top 100 double digits</h1>
     <button type="button" onClick="showHideAddButtons()">Drag and Drop on</button>
     <table id="dndTable">

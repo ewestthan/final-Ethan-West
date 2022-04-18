@@ -61,9 +61,9 @@ if(isset($_POST['btnDelete'])){
         print_r($_POST);
         print'</pre>';
     }
-    $rank = filter_var($_POST['hidRank']);
+    $climbId = filter_var($_POST['hidClimbId']);
     
-    $sql = 'DELETE FROM top100 WHERE pmkClimbId = '. $rank . ' AND fnkListId = ' . $listId;
+    $sql = 'DELETE FROM top100 WHERE pmkClimbId = '. $climbId . ' AND fnkListId = ' . $listId;
     $data = '';
     if(DEBUG){
         print $thisDatabaseReader->displayQuery($sql, $data);
@@ -234,13 +234,14 @@ if(isset($_POST['btnUpdate'])){
         $climbs = $thisDatabaseWriter->select($sql);
         $rowNumber = 1;
         $rank = 1;
-        print '<tr id="addButton' . $rowNumber . '" class="addButton" style="display:table-row">';
+        print '<tr id="addButton' . $rowNumber . '" class="addButton" style="display:none">';
         print '<td colspan=12><button onClick="showHideForm(' . $rowNumber . ')"><img src="../images/plus.png"></td>';
         print '</tr>';   
         displayForm($rowNumber, $rank, $listId);
 
         foreach ($climbs as $climb) {
             $rowNumber++;
+            $climbId = $climb['pmkClimbId'];
             $rank = $climb['fldRank'];
             $grade = $climb['fldGrade'];
             $name = $climb['fldName'];
@@ -276,22 +277,25 @@ if(isset($_POST['btnUpdate'])){
             print '<td class="checkbox"><input type="checkbox" id="chkGoodSetting" value ="1" name="chkGoodSetting" ';
                 if($goodSetting == 1) print 'checked';
                 print ' tabindex="500"></td>';
-            print '<input type="hidden" id="hidRank" name="hidRank" value="' . $rank . '">';
+            
+            print '<td><button>Edit Popup</button></td>';
+
+            print '<input type="hidden" id="hidClimbId" name="hidClimbId" value="' . $climbId . '">';
             print '<input type="hidden" id="hidListId" name="hidListId" value="' . $listId . '">';
-            print '<td><p><input type="submit" value="Update" tabindex="999" name="btnUpdate"></p></td>';
-            print '<td><p><input type="submit" value="Delete" tabindex="999" name="btnDelete"></p></td>
+            print '<td><input type="submit" value="Update" tabindex="999" name="btnUpdate">';
+            print '<input type="submit" value="Delete" tabindex="999" name="btnDelete"></td>
             </form>
             </tr>';
-            print '<div id="myModal' . $climb['fldRank'] . '" class="modal">';
-                print '<div class="modal-content">';
-                    print '<h3>' . $climb['fldName'] . '</h3>';            
-                    print '<span class="close">&times;</span>';
-                    print '<section class="flex-container">';
-                        print '<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"></iframe>';
-                        print '<p>' . $climb['fldDescription'] . '</p>';
-                    print '</section>';
-            print '</div></div>';
-            print '</tr>' . PHP_EOL;
+            // print '<div id="myModal' . $climb['fldRank'] . '" class="modal">';
+            //     print '<div class="modal-content">';
+            //         print '<h3>' . $climb['fldName'] . '</h3>';            
+            //         print '<span class="close">&times;</span>';
+            //         print '<section class="flex-container">';
+            //             print '<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"></iframe>';
+            //             print '<p>' . $climb['fldDescription'] . '</p>';
+            //         print '</section>';
+            // print '</div></div>';
+            // print '</tr>' . PHP_EOL;
             
             $rowNumber++;
             $rank++; 
