@@ -12,7 +12,7 @@
         </li>
         <li>
             <a class ="<?php
-            if(PATH_PARTS['filename'] == "indexDnD") {
+            if(PATH_PARTS['filename'] == "updateMain") {
                 print 'activePage';
             }
             ?>" href = "updateMain.php">Edit</a>
@@ -27,6 +27,16 @@
         } 
         ?>
         </li>
+        
+        <div class = "dropdown">
+            <button class="droptbtn">Admin
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+            <a href="../admin/userReport.php">User Report</a>
+            </div>
+        </div>
+
         <li style='float:right'>
             <?php
             if (isset($_SESSION["id"])) {

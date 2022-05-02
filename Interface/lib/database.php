@@ -3,7 +3,7 @@ class DataBase
 {
     public $pdo = '';
 
-    const DB_DEBUG = FALSE;
+    const DB_DEBUG = true;
     public function __construct($dataBaseUser, $whichDataBasePassword, $dataBaseName)
     {
         $this->pdo = null;

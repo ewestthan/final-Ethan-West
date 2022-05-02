@@ -32,6 +32,12 @@ session_start();
     require('../lib/passwords.php');
     $thisDatabaseWriter = new DataBase($dbUsername, 'w', $dbName);
 
+    $netId = htmlentities($_SERVER["REMOTE_USER"], ENT_QUOTES, "UTF-8");
+
+    $sql = "SELECT fldNetId FROM tblAdmins WHERE fldNetId = '" . $netId . "'";
+    $admin = $thisDatabaseWriter->select($sql);
+    if(in_array($netId, $admin)){die();}
+
     require_once("../lib/functions.php");
     print'<body class="' . PATH_PARTS['filename'] . '">' . PHP_EOL;
     print'<!-- ***** START OF BODY ***** -->';

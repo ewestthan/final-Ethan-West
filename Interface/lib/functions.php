@@ -1,19 +1,19 @@
 <?php
-function check_login($dbUsername, $dbName){
-	if(isset($_SESSION['id'])){
-    	$databaseWriter = new DataBase($dbUsername, 'w', $dbName);
+function check_login($dbUsername, $dbName)
+{
+	if (isset($_SESSION['id'])) {
+		$databaseWriter = new DataBase($dbUsername, 'w', $dbName);
 
 		$id = array($_SESSION['id']);
-		$query = "SELECT `pmkUsername` FROM tblUsers WHERE `pmkUsername` = ? limit 1";
+		$query = "SELECT `fldUsername` FROM tblUsers WHERE `fldUsername` = ? limit 1";
 		print $databaseWriter->displayQuery($query, $id);
 		$result = $databaseWriter->select($query, $id);
-		if($result) {
-			$query = "SELECT * FROM tblUsers WHERE `pmkUsername` = ?";
+		if ($result) {
+			$query = "SELECT * FROM tblUsers WHERE `fldUsername` = ?";
 			$user_data = $databaseWriter->select($query, $id);
 			return $user_data;
 		}
-	} 
-	else{
+	} else {
 		return false;
 	}
 }
@@ -24,15 +24,15 @@ function check_login($dbUsername, $dbName){
 function getData($field)
 {
 	if (!isset($_POST[$field])) {
-        $data = 0;
-    } else {
-        $data = htmlspecialchars(trim($_POST[$field]));
-    }
-    return $data;
-} 
-
-
-function verifyAlphaNum($testString){
-    return(preg_match ("/^([[:alnum:]]|-|\.| |\'|&|;|#)+$/", $testString));
+		$data = 0;
+	} else {
+		$data = htmlspecialchars(trim($_POST[$field]));
+	}
+	return $data;
 }
-?>
+
+
+function verifyAlphaNum($testString)
+{
+	return (preg_match("/^([[:alnum:]]|-|\.| |\'|&|;|#)+$/", $testString));
+}

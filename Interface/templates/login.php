@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 	if (!empty($user_name) && !empty($password) && !is_numeric($user_name)) {
 
 		//read from database
-		$query = "SELECT `fldPassword` FROM tblUsers WHERE pmkUsername = ? limit 1";
+		$query = "SELECT `fldPassword` FROM tblUsers WHERE fldUsername = ? limit 1";
 		$value = array($user_name);
 		echo $thisDatabaseWriter->displayQuery($query, $value);
 		$result = $thisDatabaseWriter->select($query, $value);

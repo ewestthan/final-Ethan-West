@@ -46,7 +46,7 @@ include 'modal.php';
         $sql = 'SELECT * FROM top100';
         
         if (DEBUG) {
-            print $databaseWriter->displayQuery($sql);
+            print $thisDatabaseWriter->displayQuery($sql);
         }
 
         $climbs = $thisDatabaseWriter->select($sql);

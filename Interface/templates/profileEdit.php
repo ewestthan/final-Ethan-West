@@ -1,10 +1,10 @@
-<?php 
+<?php
 include 'top.php';
 $user_data = check_login($dbUsername, $dbName);
 
 $listId = isset($_GET['tbl']) ? (int) htmlspecialchars($_GET['tbl']) : 0;
 //validate record exists
-if(isset($_POST['hidListId'])){
+if (isset($_POST['hidListId'])) {
     $listId = (int) htmlspecialchars($_POST['hidListId']);
 }
 
@@ -14,7 +14,8 @@ if (DEBUG) {
 }
 $list = $thisDatabaseWriter->select($sql);
 
-function displayForm($rowNumber, $rank, $listId){
+function displayForm($rowNumber, $rank, $listId)
+{
     $grade = '';
     $name = '';
     $location = '';
@@ -24,83 +25,83 @@ function displayForm($rowNumber, $rank, $listId){
     $flatLanding = 0;
     $tall = 0;
     $goodSetting = 0;
-    
+
     print '<tr  id="hiddenForm' . $rowNumber . '" style="display:none;">';
     print '<form action="' . PHP_SELF . '" id="frmUpdate' . $rank . '" method="post">';
     print '<td>' . $rowNumber . '<span class="close" id="close' . $rowNumber . '">&times;</span></td>';
     print '<td class="textbox"><input type="text" id="txtGrade" name="txtGrade" value="' . $grade . '" tabindex="300"></td>';
     print '<td class="textbox"><input type="text" id="txtName" name="txtName" value="' . $name . '" tabindex="300"></td>';
     print '<td class="textbox"><input type="text" id="txtLocation" name="txtLocation" value="' . $location . '" tabindex="300"></td>';
-    print '<td class="checkbox"><input type="checkbox" id="chkUncontrived" value ="1" name="chkUncontrived" '; 
-    if($uncontrived == 1) print 'checked'; 
+    print '<td class="checkbox"><input type="checkbox" id="chkUncontrived" value ="1" name="chkUncontrived" ';
+    if ($uncontrived == 1) print 'checked';
     print ' tabindex="500"></td>';
     print '<td class="checkbox"><input type="checkbox" id="chkObvious" value ="1" name="chkObvious" ';
-    if($obvious == 1) print 'checked'; 
+    if ($obvious == 1) print 'checked';
     print ' tabindex="500"></td>';
     print '<td class="checkbox"><input type="checkbox" id="chkGoodRock" value ="1" name="chkGoodRock" ';
-        if($goodRock == 1) print 'checked'; 
-        print ' tabindex="500"></td>';
+    if ($goodRock == 1) print 'checked';
+    print ' tabindex="500"></td>';
     print '<td class="checkbox"><input type="checkbox" id="chkFlatLanding" value ="1" name="chkFlatLanding" ';
-        if($flatLanding == 1) print 'checked'; 
-        print ' tabindex="500"></td>';
+    if ($flatLanding == 1) print 'checked';
+    print ' tabindex="500"></td>';
     print '<td class="checkbox"><input type="checkbox" id="chkTall" value ="1" name="chkTall" ';
-        if($tall == 1) print 'checked'; 
-        print ' tabindex="500"></td>';
+    if ($tall == 1) print 'checked';
+    print ' tabindex="500"></td>';
     print '<td class="checkbox"><input type="checkbox" id="chkGoodSetting" value ="1" name="chkGoodSetting" ';
-        if($goodSetting == 1) print 'checked';
-        print ' tabindex="500"></td>';
+    if ($goodSetting == 1) print 'checked';
+    print ' tabindex="500"></td>';
     print '<input type="hidden" id="hidRank" name="hidRank" value="' . $rank . '">';
     print '<input type="hidden" id="hidListId" name="hidListId" value="' . $listId . '">';
     print '<td colspan=2><p><input type="submit" value="Save" tabindex="999" name="btnUpdate"></p></td>
     </form></tr>';
 }
 
-if(isset($_POST['btnDelete'])){
-    if(DEBUG){
+if (isset($_POST['btnDelete'])) {
+    if (DEBUG) {
         print '<p>POST array:</p><pre>';
         print_r($_POST);
-        print'</pre>';
+        print '</pre>';
     }
     $climbId = filter_var($_POST['hidClimbId']);
-    
-    $sql = 'DELETE FROM top100 WHERE pmkClimbId = '. $climbId . ' AND fnkListId = ' . $listId;
+
+    $sql = 'DELETE FROM top100 WHERE pmkClimbId = ' . $climbId . ' AND fnkListId = ' . $listId;
     $data = '';
-    if(DEBUG){
-        print $thisDatabaseReader->displayQuery($sql, $data);
+    if (DEBUG) {
+        print $thisDatabaseWriter->displayQuery($sql, $data);
     }
     $thisDatabaseWriter->select($sql, $data);
 }
 
-if(isset($_POST['btnDeleteList'])){
-    if(DEBUG){
+if (isset($_POST['btnDeleteList'])) {
+    if (DEBUG) {
         print '<p>POST array:</p><pre>';
         print_r($_POST);
-        print'</pre>';
+        print '</pre>';
     }
     $listId = filter_var($_POST['hidListId']);
-    
+
     $sql = 'DELETE FROM top100 WHERE fnkListId = ' . $listId;
     $data = '';
-    if(DEBUG){
-        print $thisDatabaseReader->displayQuery($sql, $data);
+    if (DEBUG) {
+        print $thisDatabaseWriter->displayQuery($sql, $data);
     }
     $thisDatabaseWriter->select($sql, $data);
-    
+
     $sql = 'DELETE FROM tblLists WHERE pmkListId = ' . $listId;
     $data = '';
-    if(DEBUG){
-        print $thisDatabaseReader->displayQuery($sql, $data);
+    if (DEBUG) {
+        print $thisDatabaseWriter->displayQuery($sql, $data);
     }
     $thisDatabaseWriter->select($sql, $data);
     header("Location: profile.php");
-	die;
+    die;
 }
 
-if(isset($_POST['btnUpdate'])){
-    if(DEBUG){
+if (isset($_POST['btnUpdate'])) {
+    if (DEBUG) {
         print '<p>POST array:</p><pre>';
         print_r($_POST);
-        print'</pre>';
+        print '</pre>';
     }
     $saveData = true;
 
@@ -119,21 +120,21 @@ if(isset($_POST['btnUpdate'])){
     $description = '';
     $finalRating = 0;
 
-    if(!filter_var($grade)){
+    if (!filter_var($grade)) {
         print '<p class="mistake">Please enter a valid grade.</p>';
         $saveData = false;
     }
-    if(!filter_var($name)){
+    if (!filter_var($name)) {
         print '<p class="mistake">Please enter a valid name.</p>';
         $saveData = false;
     }
-    if(!filter_var($location)){
+    if (!filter_var($location)) {
         print '<p class="mistake">Please enter a valid location.</p>';
         $saveData = false;
     }
-    
-    
-    if($saveData){
+
+
+    if ($saveData) {
         $sql = 'INSERT INTO top100 SET ';
         $sql .= 'fnkListId = ?, ';
         $sql .= 'fldRank = ?, ';
@@ -196,13 +197,12 @@ if(isset($_POST['btnUpdate'])){
         $data[] = $description;
         $data[] = $finalRating;
 
-        if(DEBUG){
+        if (DEBUG) {
             print $thisDatabaseWriter->displayQuery($sql, $data);
         }
-        if($thisDatabaseWriter->insert($sql, $data)){
+        if ($thisDatabaseWriter->insert($sql, $data)) {
             print 'Updated!';
-        }
-        else{
+        } else {
             print "Couldn't update";
         }
     }
@@ -214,7 +214,7 @@ if(isset($_POST['btnUpdate'])){
     <button type="button" onClick="showHideAddButtons()">Drag and Drop on</button>
     <table id="dndTable">
         <tr>
-            <th>Rank</th>  
+            <th>Rank</th>
             <th>Grade</th>
             <th>Name</th>
             <th>Location</th>
@@ -226,7 +226,7 @@ if(isset($_POST['btnUpdate'])){
             <th>Beautiful setting</th>
             <th colspan=2></th>
         </tr>
-		<?php
+        <?php
         $sql = 'SELECT * FROM top100 WHERE fnkListId = ' . $listId . ' ORDER BY fldRank ASC';
         if (DEBUG) {
             print $thisDatabaseWriter->displayQuery($sql);
@@ -236,7 +236,7 @@ if(isset($_POST['btnUpdate'])){
         $rank = 1;
         print '<tr id="addButton' . $rowNumber . '" class="addButton" style="display:none">';
         print '<td colspan=12><button onClick="showHideForm(' . $rowNumber . ')"><img src="../images/plus.png"></td>';
-        print '</tr>';   
+        print '</tr>';
         displayForm($rowNumber, $rank, $listId);
 
         foreach ($climbs as $climb) {
@@ -259,25 +259,25 @@ if(isset($_POST['btnUpdate'])){
             print '<td class="textbox"><input type="text" id="txtGrade" name="txtGrade" value="' . $grade . '" tabindex="300"></td>';
             print '<td class="textbox"><input type="text" id="txtName" name="txtName" value="' . $name . '" tabindex="300"></td>';
             print '<td class="textbox"><input type="text" id="txtLocation" name="txtLocation" value="' . $location . '" tabindex="300"></td>';
-            print '<td class="checkbox"><input type="checkbox" id="chkUncontrived" value ="1" name="chkUncontrived" '; 
-            if($uncontrived == 1) print 'checked'; 
+            print '<td class="checkbox"><input type="checkbox" id="chkUncontrived" value ="1" name="chkUncontrived" ';
+            if ($uncontrived == 1) print 'checked';
             print ' tabindex="500"></td>';
             print '<td class="checkbox"><input type="checkbox" id="chkObvious" value ="1" name="chkObvious" ';
-            if($obvious == 1) print 'checked'; 
+            if ($obvious == 1) print 'checked';
             print ' tabindex="500"></td>';
             print '<td class="checkbox"><input type="checkbox" id="chkGoodRock" value ="1" name="chkGoodRock" ';
-                if($goodRock == 1) print 'checked'; 
-                print ' tabindex="500"></td>';
+            if ($goodRock == 1) print 'checked';
+            print ' tabindex="500"></td>';
             print '<td class="checkbox"><input type="checkbox" id="chkFlatLanding" value ="1" name="chkFlatLanding" ';
-                if($flatLanding == 1) print 'checked'; 
-                print ' tabindex="500"></td>';
+            if ($flatLanding == 1) print 'checked';
+            print ' tabindex="500"></td>';
             print '<td class="checkbox"><input type="checkbox" id="chkTall" value ="1" name="chkTall" ';
-                if($tall == 1) print 'checked'; 
-                print ' tabindex="500"></td>';
+            if ($tall == 1) print 'checked';
+            print ' tabindex="500"></td>';
             print '<td class="checkbox"><input type="checkbox" id="chkGoodSetting" value ="1" name="chkGoodSetting" ';
-                if($goodSetting == 1) print 'checked';
-                print ' tabindex="500"></td>';
-            
+            if ($goodSetting == 1) print 'checked';
+            print ' tabindex="500"></td>';
+
             print '<td><button>Edit Popup</button></td>';
 
             print '<input type="hidden" id="hidClimbId" name="hidClimbId" value="' . $climbId . '">';
@@ -296,20 +296,19 @@ if(isset($_POST['btnUpdate'])){
             //         print '</section>';
             // print '</div></div>';
             // print '</tr>' . PHP_EOL;
-            
+
             $rowNumber++;
-            $rank++; 
-            
+            $rank++;
+
             print '<tr id="addButton' . $rowNumber . '" class="addButton" style="display:none">';
             print '<td colspan=12><button onClick="showHideForm(' . $rowNumber . ')"><img src="../images/plus.png"></td>';
-            print '</tr>';     
+            print '</tr>';
             displayForm($rowNumber, $rank, $listId);
         }
         ?>
     </table>
-    <form action="<?php print PHP_SELF?>" id="frmDelete" method="post">
+    <form action="<?php print PHP_SELF ?>" id="frmDelete" method="post">
         <input type="hidden" id="hidListId" name="hidListId" value="<?php print $listId; ?>">
         <input name="btnDeleteList" id="button" type="submit" value="Delete List">
-	</form>
+    </form>
 </section>
-
