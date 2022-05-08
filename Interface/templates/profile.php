@@ -24,7 +24,7 @@ if (isset($_POST['btnCreateTable'])) {
     if (DEBUG) {
         print $thisDatabaseWriter->displayQuery($sql, $data);
     }
-    if ($thisDatabaseWriter->select($sql, $data)) {
+    if ($thisDatabaseWriter->insert($sql, $data)) {
         header("Location: profileEdit.php?tbl=" . $listId);
         die();
     }
@@ -81,14 +81,14 @@ if (isset($_POST['btnCreateTable'])) {
             print '<th>Final Rating</th>';
             print '</tr>';
 
-            $sql = 'SELECT * FROM top100 JOIN tblLists ON pmkListId = fnkListId WHERE fnkListId = ' . $listId;
+            $sql = 'SELECT * FROM top100 JOIN tblLists ON pmkListId = fnkListId WHERE fnkListId = ' . $listId . ' ORDER BY fldRank ASC';
             if (DEBUG) {
                 print $thisDatabaseWriter->displayQuery($sql);
             }
             $list = $thisDatabaseWriter->select($sql);
 
             foreach ($list as $climb) {
-                print '<tr onclick="showModal(' . $climb['fldRank'] . ')">'; //include mouse click display image/description and links to vids
+                print '<tr onclick="showModal(' . $climb['pmkClimbId'] . ')">'; //include mouse click display image/description and links to vids
                 print '<td>' . $climb['fldRank'] . '</td>';
                 print '<td>V' . $climb['fldGrade'] . '</td>';
                 print '<td>' . $climb['fldName'] . '</td>';

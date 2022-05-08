@@ -1,5 +1,5 @@
-<?php 
-define('DEBUG', true);
+<?php
+define('DEBUG', false);
 
 define('DEVELOPMENT', true);
 
@@ -7,7 +7,7 @@ $_SERVER = filter_input_array(INPUT_SERVER, FILTER_SANITIZE_STRING);
 
 define('SERVER', $_SERVER['SERVER_NAME']);
 
-define('DOMAIN' , '//' . SERVER);
+define('DOMAIN', '//' . SERVER);
 
 define('PHP_SELF', $_SERVER['PHP_SELF']);
 
