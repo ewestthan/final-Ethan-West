@@ -74,8 +74,6 @@ if (isset($_POST['btnDelete'])) {
     }
     if ($thisDatabaseWriter->select($sql, $data)) {
         print 'Updated!';
-    } else {
-        print "Couldn't update";
     }
 
     $sql = 'UPDATE top100 SET fldRank = fldRank - 1 WHERE fnkListId = ' . $listId . ' AND fldRank >= ' . $rank;
@@ -85,8 +83,6 @@ if (isset($_POST['btnDelete'])) {
     }
     if ($thisDatabaseWriter->select($sql, $data)) {
         print 'Updated!';
-    } else {
-        print "Couldn't update";
     }
 }
 

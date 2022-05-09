@@ -7,7 +7,7 @@ function printModal($climb)
     print '<h3>' . $climb['fldName'] . '</h3>';
     print '<span class="close"' . $climb['pmkClimbId'] . '>&times;</span>';
     print '<section class="flex-container">';
-    print '<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"></iframe>';
+    print '<iframe src="https://www.youtube.com/embed/' . $climb['fldImage'] . '"></iframe>';
     print '<p>' . $climb['fldDescription'] . '</p>';
     print '</section>';
     print '</div></div>';

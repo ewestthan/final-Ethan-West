@@ -24,114 +24,113 @@ if (isset($_POST['btnCreateTable'])) {
     if (DEBUG) {
         print $thisDatabaseWriter->displayQuery($sql, $data);
     }
-    if ($thisDatabaseWriter->insert($sql, $data)) {
-        header("Location: profileEdit.php?tbl=" . $listId);
-        die();
+    if (!$thisDatabaseWriter->insert($sql, $data)) {
+        print "Can't Create List";
     }
 }
 ?>
 
-<h2>Welcome back <?php echo $user_data[0]['fldUsername']; ?></h2>
 <section class='userinfo'>
     <?php
     print '<h3 class="userinfo">' . $user_data[0]['fldFirstName'] . ' ' . $user_data[0]['fldLastName'] . '</h3>';
     print '<p class="userinfo">' . $user_data[0]['fldAge'] . ' years old';
     ?>
-
+</section>
+<section>
     <form action="<?php print PHP_SELF ?>" id="frmCreateTable" method="post">
-        <label for="txtListName" id="label">Name</label>
-        <input id="text" type="text" name="txtListName">
-        <p><input id="text" type="hidden" name="hidUsername" value=<?php print $user_data[0]['fldUsername']; ?>></p>
+        <h3>Create a New Table</h3>
+        <input id="crtTable" type="text" name="txtListName">
+        <input id="crtTable" type="hidden" name="hidUsername" value=<?php print $user_data[0]['fldUsername']; ?>>
         <input name="btnCreateTable" id="button" type="submit" value="submit">
     </form>
+</section>
+<section class="tab">
+    <?php
+    $sql = 'SELECT * FROM tblLists JOIN tblUsers ON fldUsername = fnkUsername WHERE fldUsername = "' . $user_data[0]['fldUsername'] . '"';
+    if (DEBUG) {
+        print $thisDatabaseWriter->displayQuery($sql);
+    }
+    $lists = $thisDatabaseWriter->select($sql);
+    $counter = 1;
+    foreach ($lists as $list) {
+        if ($counter == 1) {
+            $default = ' id="default"';
+        } else {
+            $default = '';
+        }
+        print '<button' . $default . ' class="tablinks" onclick="showTable(event, \'List' . $list['pmkListId'] . '\')">' . $list['fldListName'] . '</button>' . PHP_EOL;
+        $counter++;
+    }
 
-    <section class="tab">
-        <?php
-        $sql = 'SELECT * FROM tblLists JOIN tblUsers ON fldUsername = fnkUsername WHERE fldUsername = "' . $user_data[0]['fldUsername'] . '"';
+    foreach ($lists as $list) {
+        $listId = $list['pmkListId'];
+        print '<section id="List' . $listId . '" class="tabcontent">';
+        print '<table id="mainTable">';
+        print '<tr>';
+        print '<th id="rank" onclick="sortByRank()">Rank</th>';
+        print '<th id="grade" onclick="sortByHardest()">Grade</th>';
+        print '<th>Name</th>';
+        print '<th>Location</th>';
+        print '<th>Uncontrived</th>';
+        print '<th>Obvious Start</th>';
+        print '<th>Good Rock</th>';
+        print '<th>Flat Landing</th>';
+        print '<th>Tall</th>';
+        print '<th>Beautiful setting</th>';
+        print '<th>Final Rating</th>';
+        print '</tr>';
+
+        $sql = 'SELECT * FROM top100 JOIN tblLists ON pmkListId = fnkListId WHERE fnkListId = ' . $listId . ' ORDER BY fldRank ASC';
         if (DEBUG) {
             print $thisDatabaseWriter->displayQuery($sql);
         }
-        $lists = $thisDatabaseWriter->select($sql);
-        $counter = 1;
-        foreach ($lists as $list) {
-            if ($counter == 1) {
-                $default = ' id="default"';
+        $list = $thisDatabaseWriter->select($sql);
+
+        foreach ($list as $climb) {
+            print '<tr onclick="showModal(' . $climb['pmkClimbId'] . ')">'; //include mouse click display image/description and links to vids
+            print '<td>' . $climb['fldRank'] . '</td>';
+            print '<td>V' . $climb['fldGrade'] . '</td>';
+            print '<td>' . $climb['fldName'] . '</td>';
+            print '<td>' . $climb['fldLocation'] . '</td>';
+            if ($climb['fldUncontrived'] == 1) {
+                print '<td><i class="fa fa-check"></i></td>';
             } else {
-                $default = '';
+                print '<td><i class="fa fa-remove"></i></td>';
             }
-            print '<button' . $default . ' class="tablinks" onclick="showTable(event, \'List' . $list['pmkListId'] . '\')">' . $list['fldListName'] . '</button>' . PHP_EOL;
-            $counter++;
+            if ($climb['fldObviousStart'] == 1) {
+                print '<td><i class="fa fa-check"></i></td>';
+            } else {
+                print '<td><i class="fa fa-remove"></i></td>';
+            }
+            if ($climb['fldGoodRock'] == 1) {
+                print '<td><i class="fa fa-check"></i></td>';
+            } else {
+                print '<td><i class="fa fa-remove"></i></td>';
+            }
+            if ($climb['fldFlatLanding'] == 1) {
+                print '<td><i class="fa fa-check"></i></td>';
+            } else {
+                print '<td><i class="fa fa-remove"></i></td>';
+            }
+            if ($climb['fldTall'] == 1) {
+                print '<td><i class="fa fa-check"></i></td>';
+            } else {
+                print '<td><i class="fa fa-remove"></i></td>';
+            }
+            if ($climb['fldGoodSetting'] == 1) {
+                print '<td><i class="fa fa-check"></i></td>';
+            } else {
+                print '<td><i class="fa fa-remove"></i></td>';
+            }
+            print '<td>' . $climb['fldFinalRating'] . '</td>';
+            printModal($climb);
         }
+        print '</table>';
+        print '<a href = profileEdit.php?tbl=' . $listId . '><button>Edit List</button></a>';
+        print '</section>';
+    }
+    ?>
+</section>
+</body>
 
-        foreach ($lists as $list) {
-            $listId = $list['pmkListId'];
-            print '<section id="List' . $listId . '" class="tabcontent">';
-            print '<table id="mainTable">';
-            print '<tr>';
-            print '<th id="rank" onclick="sortByRank()">Rank</th>';
-            print '<th id="grade" onclick="sortByHardest()">Grade</th>';
-            print '<th>Name</th>';
-            print '<th>Location</th>';
-            print '<th>Uncontrived</th>';
-            print '<th>Obvious Start</th>';
-            print '<th>Good Rock</th>';
-            print '<th>Flat Landing</th>';
-            print '<th>Tall</th>';
-            print '<th>Beautiful setting</th>';
-            print '<th>Final Rating</th>';
-            print '</tr>';
-
-            $sql = 'SELECT * FROM top100 JOIN tblLists ON pmkListId = fnkListId WHERE fnkListId = ' . $listId . ' ORDER BY fldRank ASC';
-            if (DEBUG) {
-                print $thisDatabaseWriter->displayQuery($sql);
-            }
-            $list = $thisDatabaseWriter->select($sql);
-
-            foreach ($list as $climb) {
-                print '<tr onclick="showModal(' . $climb['pmkClimbId'] . ')">'; //include mouse click display image/description and links to vids
-                print '<td>' . $climb['fldRank'] . '</td>';
-                print '<td>V' . $climb['fldGrade'] . '</td>';
-                print '<td>' . $climb['fldName'] . '</td>';
-                print '<td>' . $climb['fldLocation'] . '</td>';
-                if ($climb['fldUncontrived'] == 1) {
-                    print '<td><i class="fa fa-check"></i></td>';
-                } else {
-                    print '<td><i class="fa fa-remove"></i></td>';
-                }
-                if ($climb['fldObviousStart'] == 1) {
-                    print '<td><i class="fa fa-check"></i></td>';
-                } else {
-                    print '<td><i class="fa fa-remove"></i></td>';
-                }
-                if ($climb['fldGoodRock'] == 1) {
-                    print '<td><i class="fa fa-check"></i></td>';
-                } else {
-                    print '<td><i class="fa fa-remove"></i></td>';
-                }
-                if ($climb['fldFlatLanding'] == 1) {
-                    print '<td><i class="fa fa-check"></i></td>';
-                } else {
-                    print '<td><i class="fa fa-remove"></i></td>';
-                }
-                if ($climb['fldTall'] == 1) {
-                    print '<td><i class="fa fa-check"></i></td>';
-                } else {
-                    print '<td><i class="fa fa-remove"></i></td>';
-                }
-                if ($climb['fldGoodSetting'] == 1) {
-                    print '<td><i class="fa fa-check"></i></td>';
-                } else {
-                    print '<td><i class="fa fa-remove"></i></td>';
-                }
-                print '<td>' . $climb['fldFinalRating'] . '</td>';
-                printModal($climb);
-            }
-            print '</table>';
-            print '<a href = profileEdit.php?tbl=' . $listId . '><button>Edit List</button></a>';
-            print '</section>';
-        }
-        ?>
-    </section>
-    </body>
-
-    </html>
+</html>
