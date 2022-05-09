@@ -24,6 +24,18 @@ $ericsList = 24;
 
 <section class="tab">
     <h1>Eric's Top 100 double digits</h1>
+    <?php
+    $sql = 'SELECT * FROM top100 WHERE fnkListId = ' . $ericsList;
+
+    if (DEBUG) {
+        print $thisDatabaseWriter->displayQuery($sql);
+    }
+
+    $climbs = $thisDatabaseWriter->select($sql);
+    foreach ($climbs as $climb) {
+        printModal($climb);
+    }
+    ?>
     <table id="mainTable">
         <tr>
             <th id='rank' onclick='sortByRank()'>Rank</th>
@@ -39,14 +51,6 @@ $ericsList = 24;
             <th>Final Rating</th>
         </tr>
         <?php
-
-        $sql = 'SELECT * FROM top100 WHERE fnkListId = ' . $ericsList;
-
-        if (DEBUG) {
-            print $thisDatabaseWriter->displayQuery($sql);
-        }
-
-        $climbs = $thisDatabaseWriter->select($sql);
 
         foreach ($climbs as $climb) {
             print '<tr onclick="showModal(' . $climb['pmkClimbId'] . ')">'; //include mouse click display image/description and links to vids
@@ -93,7 +97,7 @@ $ericsList = 24;
                 print '<td><i class="fa fa-remove"></i></td>';
             }
             print '<td>' . $score . '</td>';
-            printModal($climb);
+            print '</tr>';
         }
         print '</table>';
         ?>

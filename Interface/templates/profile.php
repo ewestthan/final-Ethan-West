@@ -67,6 +67,17 @@ if (isset($_POST['btnCreateTable'])) {
     foreach ($lists as $list) {
         $listId = $list['pmkListId'];
         print '<section id="List' . $listId . '" class="tabcontent">';
+
+        $sql = 'SELECT * FROM top100 JOIN tblLists ON pmkListId = fnkListId WHERE fnkListId = ' . $listId . ' ORDER BY fldRank ASC';
+        if (DEBUG) {
+            print $thisDatabaseWriter->displayQuery($sql);
+        }
+        $list = $thisDatabaseWriter->select($sql);
+
+        foreach ($list as $climb) {
+            printModal($climb);
+        }
+
         print '<table id="mainTable">';
         print '<tr>';
         print '<th id="rank" onclick="sortByRank()">Rank</th>';
@@ -82,11 +93,7 @@ if (isset($_POST['btnCreateTable'])) {
         print '<th>Final Rating</th>';
         print '</tr>';
 
-        $sql = 'SELECT * FROM top100 JOIN tblLists ON pmkListId = fnkListId WHERE fnkListId = ' . $listId . ' ORDER BY fldRank ASC';
-        if (DEBUG) {
-            print $thisDatabaseWriter->displayQuery($sql);
-        }
-        $list = $thisDatabaseWriter->select($sql);
+
 
         foreach ($list as $climb) {
             print '<tr onclick="showModal(' . $climb['pmkClimbId'] . ')">'; //include mouse click display image/description and links to vids
@@ -132,7 +139,7 @@ if (isset($_POST['btnCreateTable'])) {
                 print '<td><i class="fa fa-remove"></i></td>';
             }
             print '<td>' . $score . '</td>';
-            printModal($climb);
+            print '</tr>';
         }
         print '</table>';
         print '<a href = profileEdit.php?tbl=' . $listId . '><button>Edit List</button></a>';

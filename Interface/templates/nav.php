@@ -33,9 +33,8 @@
             print '" href="profile.php">My Lists</a></li>';
         }
         ?>
-        </li>
 
-        <div class="dropdown">
+        <li class="dropdown">
             <button class="droptbtn">Admin
                 <i class="fa fa-caret-down"></i>
             </button>
@@ -45,7 +44,7 @@
             <div class="dropdown-content">
                 <a href="../admin/listReport.php">List Report</a>
             </div>
-        </div>
+        </li>
 
         <li style='float:right'>
             <?php

@@ -10,7 +10,6 @@ function printModal($climb)
     print '<iframe src="https://www.youtube.com/embed/' . $climb['fldImage'] . '"></iframe>';
     print '<p id="description">' . $climb['fldDescription'] . '</p>';
     print '</section>';
-    print '</div></div>';
-    print '</tr>' . PHP_EOL;
+    print '</div></div>' . PHP_EOL;
 }
 ?>
