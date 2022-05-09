@@ -1,6 +1,7 @@
 <footer>
-    <p>Ethan West's <a href='../index.php'>Site Map (main index)</a></p>
-    <p><cite>information and images from <a href='https://vtfishandwildlife.com/' target='_blank'>vtfishandwildlife.com</a></cite></p>
+    <p>Ethan West's <a href='../cs148/index.php'>Site Map (main index)</a></p>
+    <p><a href="index.php">Ethan West</a></p>
 </footer>
 </body>
+
 </html>
