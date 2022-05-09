@@ -27,7 +27,7 @@ if (isset($_POST['btnDelete'])) {
 ?>
 
 <main>
-    <h2>Vermont's Wildlife</h2>
+    <h2>List Report</h2>
     <table>
         <tr>
             <th>List Name</th>
