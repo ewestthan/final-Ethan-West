@@ -11,7 +11,7 @@ include 'top.php';
         <section>
             <img class="imgAbout" src="../images/ethan.png">
             <h3>Ethan West</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <p>Ethan West is a Junior at the University of Vermont Majoring in Computer Science. He is an avid climber and has been so for about 4 years. His passion for the sport has inspired this website, putting many hours into the project. At some point hopefully the website will launch and be released to the public, but it has a long way to go before it’s ready. Enjoy!</p>
         </section>
     </body>
 </main>
