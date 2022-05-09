@@ -333,3 +333,7 @@ if (isset($_POST['btnUpdate'])) {
         ?>
     </table>
 </section>
+
+<?php
+include "footer.php";
+?>

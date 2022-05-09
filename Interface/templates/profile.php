@@ -52,6 +52,7 @@ if (isset($_POST['btnCreateTable'])) {
     }
     $lists = $thisDatabaseWriter->select($sql);
     $counter = 1;
+    print '<div>';
     foreach ($lists as $list) {
         if ($counter == 1) {
             $default = ' id="default"';
@@ -61,6 +62,7 @@ if (isset($_POST['btnCreateTable'])) {
         print '<button' . $default . ' class="tablinks" onclick="showTable(event, \'List' . $list['pmkListId'] . '\')">' . $list['fldListName'] . '</button>' . PHP_EOL;
         $counter++;
     }
+    print '</div>';
 
     foreach ($lists as $list) {
         $listId = $list['pmkListId'];
@@ -92,37 +94,44 @@ if (isset($_POST['btnCreateTable'])) {
             print '<td>V' . $climb['fldGrade'] . '</td>';
             print '<td>' . $climb['fldName'] . '</td>';
             print '<td>' . $climb['fldLocation'] . '</td>';
+            $score = 0;
             if ($climb['fldUncontrived'] == 1) {
                 print '<td><i class="fa fa-check"></i></td>';
+                $score++;
             } else {
                 print '<td><i class="fa fa-remove"></i></td>';
             }
             if ($climb['fldObviousStart'] == 1) {
                 print '<td><i class="fa fa-check"></i></td>';
+                $score++;
             } else {
                 print '<td><i class="fa fa-remove"></i></td>';
             }
             if ($climb['fldGoodRock'] == 1) {
                 print '<td><i class="fa fa-check"></i></td>';
+                $score++;
             } else {
                 print '<td><i class="fa fa-remove"></i></td>';
             }
             if ($climb['fldFlatLanding'] == 1) {
                 print '<td><i class="fa fa-check"></i></td>';
+                $score++;
             } else {
                 print '<td><i class="fa fa-remove"></i></td>';
             }
             if ($climb['fldTall'] == 1) {
                 print '<td><i class="fa fa-check"></i></td>';
+                $score++;
             } else {
                 print '<td><i class="fa fa-remove"></i></td>';
             }
             if ($climb['fldGoodSetting'] == 1) {
                 print '<td><i class="fa fa-check"></i></td>';
+                $score++;
             } else {
                 print '<td><i class="fa fa-remove"></i></td>';
             }
-            print '<td>' . $climb['fldFinalRating'] . '</td>';
+            print '<td>' . $score . '</td>';
             printModal($climb);
         }
         print '</table>';
@@ -131,6 +140,6 @@ if (isset($_POST['btnCreateTable'])) {
     }
     ?>
 </section>
-</body>
-
-</html>
+<?php
+include "footer.php";
+?>

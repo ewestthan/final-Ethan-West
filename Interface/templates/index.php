@@ -98,3 +98,7 @@ $ericsList = 24;
         print '</table>';
         ?>
 </section>
+
+<?php
+include "footer.php";
+?>

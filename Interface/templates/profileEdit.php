@@ -335,3 +335,7 @@ if (isset($_POST['btnUpdate'])) {
         <input name="btnDeleteList" id="button" type="submit" value="Delete List">
     </form>
 </section>
+
+<?php
+include "footer.php";
+?>

@@ -1,6 +1,7 @@
 <footer>
-    <p><a href="../index.php">Site Map</a></p>
-    <p><a href="//ewest3.w3.uvm.edu/cs148/Final-Ethan-West">Ethan West</a></p>
+    <p>Ethan West's <a href='../cs148/index.php'>Site Map (main index)</a></p>
+    <p><a href="index.php">Ethan West</a></p>
 </footer>
 </body>
+
 </html>

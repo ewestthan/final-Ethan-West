@@ -42,6 +42,9 @@
             <div class="dropdown-content">
                 <a href="../admin/userReport.php">User Report</a>
             </div>
+            <div class="dropdown-content">
+                <a href="../admin/listReport.php">List Report</a>
+            </div>
         </div>
 
         <li style='float:right'>
