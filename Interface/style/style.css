@@ -116,6 +116,7 @@ section{
   background-color: lightgrey;
   margin: 1em;
   border-radius: 1em;
+  padding: 1em;
   }
 
 h1{
@@ -138,10 +139,7 @@ table{
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10+ and Edge */
   user-select: none; /* Standard syntax */
-}
-
-table:hover{
-  cursor: pointer;
+  width: 100%;
 }
 
 th{
@@ -155,6 +153,7 @@ th:hover{
 
 tr{
   padding: 1em;
+  cursor: grab;
 }
 
 tr:nth-child(even) {
@@ -163,6 +162,8 @@ tr:nth-child(even) {
 
 td{
   padding: 0.5em;
+    cursor: grab;
+  text-align: center;
 }
 
 td,tr,th{
@@ -257,9 +258,11 @@ input{
   margin: auto;
 }
 
-button{
+input#button{
   display: block;
   margin: auto;
+  margin-top: 1em;
+  margin-bottom: 2em;
 }
 
 /* Style the tab */
