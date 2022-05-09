@@ -130,11 +130,10 @@ if (isset($_POST['btnSubmit'])) {
 ?>
 
 
-<a href='login.php'><img src="../images/logo.png" class='navLogo' alt='logo'></a>
 <div id="box">
 
 	<form action="<?php print PHP_SELF ?>" id="frmSignup" method="post">
-		<div style="font-size: 20px;margin: 10px;color: lightgrey;">Signup</div>
+		<div style="font-size: 20px;margin: 10px;color: black;">Add User</div>
 
 		<label for="txtFirst" id="label">First Name</label>
 		<input id="text" type="text" name="txtFirst" value="<?php print $txtFirst; ?>">
@@ -152,7 +151,7 @@ if (isset($_POST['btnSubmit'])) {
 		<input type="hidden" id="hidUserId" name="hidUserId" value="<?php print $userId; ?>">
 		<input type="hidden" id="hidEnteredBy" name="hidEnteredBy" value="<?php print $enteredBy; ?>">
 
-		<input name="btnSubmit" id="button" type="submit" value="Signup">
+		<input name="btnSubmit" id="button" type="submit" value="Add User">
 	</form>
 </div>
 </body>
